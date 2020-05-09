@@ -2,41 +2,76 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <cassert>
 using namespace std;
+
+static const uint32_t IMAGE_WIDTH = 16;
+static const uint32_t IMAGE_HEIGHT = 16;
 
 class Image
 {
 public:
 	Image(const std::string& img_file)
 	{
+		// Todo:
+		//	* Implement load image
+		// 	* Set width, height and normalised bitmap data
+		width = 0;
+		height = 0;
+
 	}
 	~Image(){}
+
+	std::vector<double> getNormalisedBitmap() const {
+		return bitmap;
+	}
+
+private:
+	uint32_t width;
+	uint32_t height;
+	std::vector<double> bitmap;
 };
 
-class NeuralNetwork
+class NumberClassifierNN
 {
 public:
-	NeuralNetwork(){}
-	~NeuralNetwork(){}
+	NumberClassifierNN(uint32_t img_width, uint32_t img_height) :
+		input_neurons(img_width* img_height)
+	{
+	}
+	~NumberClassifierNN(){}
 
 public:
 	bool train(const Image& img)
 	{
+		// Todo: Implement the following
+		// 	* Setup input neuron
+		//	* Setup middle layers
+		//	* Train until recognised
+		//	* Save weights and bias
+		std::vector<double> bitmap = img.getNormalisedBitmap();
+		assert(bitmap.size() == input_neurons);
 		return true;
 	}
 
 	uint32_t process(const Image& img)
 	{
+		// Todo: Implement the following
+		// 	* Setup input neuron
+		//	* Setup middle layers
+		//	* Feed img bitmap to nn
+		//	* Return nn output
 		return output;
 	}
 
 private:
+	uint32_t input_neurons;
 	uint32_t output;
 };
 
-NeuralNetwork trainNNFromImageList(std::vector<std::string> img_file_list)
+NumberClassifierNN trainNNFromImageList(std::vector<std::string> img_file_list)
 {
-	NeuralNetwork nn;
+	NumberClassifierNN nn(IMAGE_WIDTH, IMAGE_HEIGHT);
 	for (std::vector<std::string>::iterator iter = img_file_list.begin(); iter != img_file_list.end(); ++iter) {
 		Image img(*iter);
 		nn.train(img);
@@ -50,7 +85,7 @@ std::vector<std::string> getImagePathList(const std::string& root)
 	return img_file_list;
 }
 
-uint32_t getImageClassification(NeuralNetwork& nn, const std::string& img_file)
+uint32_t getImageClassification(NumberClassifierNN& nn, const std::string& img_file)
 {
 	Image img(img_file);
 	return nn.process(img);
@@ -62,7 +97,7 @@ int main(int argc, char **argv) {
 	// Train NN given a list of images as training data
 	std::string training_image_root;
 	std::vector<std::string> training_file_list = getImagePathList(training_image_root);
-	NeuralNetwork nn = trainNNFromImageList(training_file_list);
+	NumberClassifierNN nn = trainNNFromImageList(training_file_list);
 
 	// Test the NN given a list of test images
 	std::string test_image_root;
