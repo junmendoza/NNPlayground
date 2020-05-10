@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include <cassert>
+#include <sstream>
+#include <dirent.h>
 using namespace std;
 
 static const uint32_t IMAGE_WIDTH = 16;
@@ -11,16 +13,25 @@ static const uint32_t IMAGE_HEIGHT = 16;
 class Image
 {
 public:
-	Image(const std::string& img_file)
+	Image(const std::string& img_file) : image_name(img_file)
 	{
 		// Todo:
 		//	* Implement load image
 		// 	* Set width, height and normalised bitmap data
+		// 	* https://stackoverflow.com/questions/1918263/reading-pixels-of-image-in-c
 		width = 0;
 		height = 0;
-
+		is_valid_image = false;
 	}
 	~Image(){}
+
+public:
+	std::string getName() const {
+		return image_name;
+	}
+	bool isValidImage() const {
+		return is_valid_image;
+	}
 
 	std::vector<double> getNormalisedBitmap() const {
 		return bitmap;
@@ -29,6 +40,8 @@ public:
 private:
 	uint32_t width;
 	uint32_t height;
+	bool is_valid_image;
+	std::string image_name;
 	std::vector<double> bitmap;
 };
 
@@ -69,42 +82,58 @@ private:
 	uint32_t output;
 };
 
-NumberClassifierNN trainNNFromImageList(std::vector<std::string> img_file_list)
+void trainNNFromImageList(NumberClassifierNN &nn, std::vector<Image> image_list)
 {
-	NumberClassifierNN nn(IMAGE_WIDTH, IMAGE_HEIGHT);
-	for (std::vector<std::string>::iterator iter = img_file_list.begin(); iter != img_file_list.end(); ++iter) {
-		Image img(*iter);
-		nn.train(img);
+	for (std::vector<Image>::iterator iter = image_list.begin(); iter != image_list.end(); ++iter) {
+		nn.train(*iter);
 	}
-	return nn;
 }
 
-std::vector<std::string> getImagePathList(const std::string& root)
+std::vector<Image> getImageList(const std::string& root)
 {
-	std::vector<std::string> img_file_list;
-	return img_file_list;
+	std::vector<Image> image_list;
+
+	struct dirent *entry = NULL;
+	DIR* dir = opendir(root.c_str());
+	if (dir != NULL) {
+		while ((entry = readdir(dir))) {
+			Image img(std::string(entry->d_name));
+			if (img.isValidImage()) {
+				image_list.push_back(img);
+			}
+		}
+	}
+	closedir(dir);
+	return image_list;
 }
 
-uint32_t getImageClassification(NumberClassifierNN& nn, const std::string& img_file)
+uint32_t getImageClassification(NumberClassifierNN& nn, const Image& image)
 {
-	Image img(img_file);
-	return nn.process(img);
+	return nn.process(image);
 }
 
 int main(int argc, char **argv) {
 	std::cout << "NN Image classification";
+	std::string root = "/nnclassify";
 
 	// Train NN given a list of images as training data
-	std::string training_image_root;
-	std::vector<std::string> training_file_list = getImagePathList(training_image_root);
-	NumberClassifierNN nn = trainNNFromImageList(training_file_list);
+	NumberClassifierNN nn(IMAGE_WIDTH, IMAGE_HEIGHT);
+	std::string training_image_root = root + "/training_set";
+	const uint32_t image_count = 9;
+	for (uint32_t n = 0; n < image_count; ++n) {
+		std::stringstream ss;
+		ss << n;
+		std::string cat_root = training_image_root + "/" + ss.str();
+		std::vector<Image> training_image_list = getImageList(cat_root);
+		trainNNFromImageList(nn, training_image_list);
+	}
 
 	// Test the NN given a list of test images
-	std::string test_image_root;
-	std::vector<std::string> test_file_list = getImagePathList(test_image_root);
-	for (std::vector<std::string>::iterator iter = test_file_list.begin(); iter != test_file_list.end(); ++iter) {
+	std::string test_image_root = root + "/test";
+	std::vector<Image> test_image_list = getImageList(test_image_root);
+	for (std::vector<Image>::iterator iter = test_image_list.begin(); iter != test_image_list.end(); ++iter) {
 		uint32_t output = getImageClassification(nn, *iter);
-		std::cout << "Img: " << iter->c_str() << " classified as: " << output << std::endl;
+		std::cout << "Image: " << iter->getName().c_str() << " classified as: " << output << std::endl;
 	}
 	return 0;
 }
