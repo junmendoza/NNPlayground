@@ -40,7 +40,8 @@ public:
     ~MNISTData(void);
 public:
     bool loadData(void);
-    std::vector<float> getData(void) const { return activation_data; }
+    std::vector<uint8_t> getLabel(void) const {return label_data; }
+    std::vector<float> getActivation(void) const { return activation_data; }
     
 private:
     bool loadRawImageData(void);
@@ -49,17 +50,18 @@ private:
     bool loadLabelData(void);
     bool validateMNISTFile() const;
     std::vector<float> normalizeData(void);
-    
-    
+
 private:
     std::string image_file;
     std::string label_file;
-    
+
     ImageHeader* image_header;
     LabelHeader* label_header;
-    
+
     uint8_t* raw_image_data;
     uint8_t* raw_label_data;
+
+    std::vector<uint8_t> label_data;
     std::vector<float> activation_data;
 };
 

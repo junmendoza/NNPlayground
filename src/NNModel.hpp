@@ -17,8 +17,8 @@ public:
     ~NNModel(void);
     
 public:
-    uint32_t train(std::vector<float>& training_data);
-    void infer(std::vector<float>& inference_data);
+    uint32_t train(std::vector<float>& training_data, std::vector<uint8_t> label);
+    void infer(std::vector<float>& inference_data, std::vector<uint8_t> label);
     
 };
 

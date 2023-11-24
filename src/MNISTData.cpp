@@ -121,13 +121,15 @@ bool MNISTData::loadRawLabelData(void)
     if (!file) {
         return false;
     }
-    
+
     // Twist data
     const uint32_t data_size32 = data_size8 / 4;
     for (int n = 0; n < data_size32; ++n) {
         *((uint32_t*)(raw_label_data + n*4)) = TWIST32(*((uint32_t*)(raw_label_data + n*4)));
         //printf("0x%.8X, ", *((uint32_t*)(raw_label_data + n*4)));
     }
+
+    label_data.assign(raw_label_data, raw_label_data + data_size8);
     return true;
 }
 
