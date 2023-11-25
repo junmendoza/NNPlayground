@@ -34,6 +34,7 @@ bool MNISTData::loadData(void)
     if (!validateMNISTFile()) {
         return false;
     }
+    normalizeData();
     return true;
 }
 
@@ -52,12 +53,13 @@ bool MNISTData::validateMNISTFile() const
             image_header->items == label_header->items;
 }
 
-std::vector<float> MNISTData::normalizeData(void)
+void MNISTData::normalizeData(void)
 {
     assert(NULL != raw_image_data);
-    std::vector<float> normalized_data;
-    
-    return activation_data;
+    for (uint32_t n = 0; n < image_header->items; ++n) {
+        float activation = ((float)raw_image_data[n]) / 255.0f;
+        activation_data.push_back(activation);
+    }
 }
 
 bool MNISTData::loadRawImageData(void)
