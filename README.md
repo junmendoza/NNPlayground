@@ -19,10 +19,9 @@
 [x] What does 1 train iteration need?
 
 ## As of 22-Nov-23
-[ ] Setup function: Input layer. Initialize and normalize
-[ ] Setup function: Normalize pixel data and assign to input layer
-[ ] Setup function: inner layers - vector of vector<float>
-[ ] Setup function: Initialize weight matrix and bias for all layers
+[x] Setup function: Input layer. Initialize and normalize
+[x] Setup function: Normalize pixel data and assign to input layer
+[ ]
 
 ## As of 23-Nov-23
 [ ] forward function
@@ -31,7 +30,15 @@
 
 
 ## As of 24-Nov-23
-[ ] Where is the label used? Which function? Layer is passed to the train function, along with the pixel image
+[x] Where is the label used? Which function? Layer is passed to the train function, along with the pixel image
+
+## As of 25-Nov-23
+[ ] Matrix class: Templatized arbitrary size MxN matrix
+[ ] Matrix class: Initialize members from T** input
+[ ] Matrix class: Multiply matrix x matrix
+[ ] Matrix class: Multiply matrix x vector Mx1
+[ ] Matrix class: Multiply matrix x vector Mx1
+
 
 # Image classifier NN overview
 ## Input layer: The number of neuron are the number of image pixels i.e. If input image is 28x28 pixels, then input layer has 28x28=784 neurons
@@ -89,7 +96,7 @@ vector<NNData> image_list = parseImageData(train-images-idx3-ubyte)
 LabelHeader label_header = parseLabelHeader(train-labels-idx1-ubyte)
 vector<int> label_list = parseLabelData(train-labels-idx1-ubyte)
 
-void Model::initLayers(vector<Layer>& layers) 
+void Model::initLayers(void)
 {
     // Init weights, biases, activation to its default values
 }
@@ -120,7 +127,7 @@ uint32_t Model::train(
     const vector<vector<float>>& training_data, 
     const vector<uint32_t> label)
 {
-    initLayers(layers);
+    initLayers();
     for (!int n = 0; n < MAX_ITERATIONS; ++n) {
         forward(training_data, layers);
         TrainingParams params = getTrainingParams(layers);
