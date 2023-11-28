@@ -21,7 +21,6 @@
 ## As of 22-Nov-23
 [x] Setup function: Input layer. Initialize and normalize
 [x] Setup function: Normalize pixel data and assign to input layer
-[ ]
 
 ## As of 23-Nov-23
 [ ] forward function
@@ -38,6 +37,19 @@
 [ ] Matrix class: Multiply matrix x matrix
 [ ] Matrix class: Multiply matrix x vector Mx1
 [ ] Matrix class: Multiply matrix x vector Mx1
+
+
+## As of 29-Nov-23
+[ ] Matrix class: Templatized arbitrary size M
+
+
+# Git Usage (This project)
+## Set the PAT from the command line
+git remote set-url origin https://junmendoza:<token>@github.com/junmendoza/NNPlayground.git
+
+## Push commit to github
+git push -u origin main
+
 
 
 # Image classifier NN overview
@@ -62,7 +74,7 @@ http://yann.lecun.com/exdb/mnist/
 ### List of 28x28 images.Pixels are organized row-wise. 
     Pixel values are 0 to 255. 0 means background (white), 255 means foreground (black).
 
-## Label file 
+## Label file
 ### Header
 ### Labels that specify the associated images in the image file. 
     The labels values are 0 to 9. 
@@ -90,7 +102,7 @@ class Layer
 
 // Image file
 ImageHeader image_header = parseImageHeader(train-images-idx3-ubyte)
-vector<NNData> image_list = parseImageData(train-images-idx3-ubyte)
+vector<float*> image_list = parseImageData(train-images-idx3-ubyte)
 
 // Label file
 LabelHeader label_header = parseLabelHeader(train-labels-idx1-ubyte)
@@ -101,12 +113,12 @@ void Model::initLayers(void)
     // Init weights, biases, activation to its default values
 }
 
-void Model::setInputLayerActivation(const vector<float>& training_data, Layer& input_layer)
+void Model::setInputLayerActivation(const float* training_data, Layer& input_layer)
 {
     // Set layer activation list from training_data activation list
 }
 
-void Model::forward(const vector<NNData>& train_data, vector<Layer>& layers) 
+void Model::forward(const vector<const float*>& train_data, vector<Layer>& layers)
 {
     // For every MNIST training data
     for (int i = 0 to train_data.cnt) {
@@ -124,8 +136,8 @@ void Model::backpropagate(const TrainingParams& params, vector<Layer>& layers)
 }
 
 uint32_t Model::train(
-    const vector<vector<float>>& training_data, 
-    const vector<uint32_t> label)
+    const vector<const float*>& training_data,
+    const vector<uint32_t>& label)
 {
     initLayers();
     for (!int n = 0; n < MAX_ITERATIONS; ++n) {

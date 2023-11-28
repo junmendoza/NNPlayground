@@ -56,9 +56,14 @@ bool MNISTData::validateMNISTFile() const
 void MNISTData::normalizeData(void)
 {
     assert(NULL != raw_image_data);
-    for (uint32_t n = 0; n < image_header->items; ++n) {
-        float activation = ((float)raw_image_data[n]) / 255.0f;
-        activation_data.push_back(activation);
+    uint32_t raw_data_idx = 0;
+    for (uint32_t i = 0; i < image_header->items; ++i) {
+        float* normalized_data = new float[PIXELS_PER_IMAGE];
+        for (uint32_t j = 0; j < PIXELS_PER_IMAGE; ++j) {
+            float activation = ((float)raw_image_data[++raw_data_idx]) / 255.0f;
+            normalized_data[j] = activation;
+        }
+        activation_data.push_back(normalized_data);
     }
 }
 
@@ -130,8 +135,6 @@ bool MNISTData::loadRawLabelData(void)
         *((uint32_t*)(raw_label_data + n*4)) = TWIST32(*((uint32_t*)(raw_label_data + n*4)));
         //printf("0x%.8X, ", *((uint32_t*)(raw_label_data + n*4)));
     }
-
-    label_data.assign(raw_label_data, raw_label_data + data_size8);
     return true;
 }
 

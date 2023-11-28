@@ -17,12 +17,12 @@ NNModel::~NNModel(void)
     SAFE_DELETE_ARRAY(layers);
 }
 
-uint32_t NNModel::train(std::vector<float>& training_data, std::vector<uint8_t> label)
+uint32_t NNModel::train(std::vector<float*>& training_data, uint8_t* label)
 {
     return 0;
 }
 
-void NNModel::infer(std::vector<float>& inference_data, std::vector<uint8_t> label)
+void NNModel::infer(std::vector<float*>& inference_data, uint8_t* label)
 {
 }
 
