@@ -2,54 +2,56 @@
 
 # Tasklist 
 ## As of 14-Nov-23
-[x] Function: MNIST::loadDatabase(...)
-[x] Function: MNIST::loadImageFile(...)
-[x] Function: MNIST::loadLabelFile(...)
-[x] Document: Outline MNIST file format
-[x] Document: Outline MNIST single image format
-[x] Document: Outline MNIST data structure
+- [x] Function: MNIST::loadDatabase(...)
+- [x] Function: MNIST::loadImageFile(...)
+- [x] Function: MNIST::loadLabelFile(...)
+- [x] Document: Outline MNIST file format
+- [x] Document: Outline MNIST single image format
+- [x] Document: Outline MNIST data structure
 
 ## As of 15-Nov-23
-[x] Download mnist training set and example binaries
+- [x] Download mnist training set and example binaries
 
 
 ## As of 20-Nov-23
-[x] Whats the train function params?
-[x] How are the 60k image and labels fed into the train function?
-[x] What does 1 train iteration need?
+- [x] Whats the train function params?
+- [x] How are the 60k image and labels fed into the train function?
+- [x] What does 1 train iteration need?
 
 ## As of 22-Nov-23
-[x] Setup function: Input layer. Initialize and normalize
-[x] Setup function: Normalize pixel data and assign to input layer
+- [x] Setup function: Input layer. Initialize and normalize
+- [x] Setup function: Normalize pixel data and assign to input layer
 
 ## As of 23-Nov-23
-[ ] forward function
-[ ] backpropagate function
-[ ] Train function: forward and backpropagate
+- [x] forward function
+- [x] backpropagate function
+- [x] Train function: forward and backpropagate
 
 
 ## As of 24-Nov-23
-[x] Where is the label used? Which function? Layer is passed to the train function, along with the pixel image
+- [x] Where is the label used? Which function? Layer is passed to the train function, along with the pixel image
 
 ## As of 25-Nov-23
-[ ] Matrix class: Templatized arbitrary size MxN matrix
-[ ] Matrix class: Initialize members from T** input
-[ ] Matrix class: Multiply matrix x matrix
-[ ] Matrix class: Multiply matrix x vector Mx1
-[ ] Matrix class: Multiply matrix x vector Mx1
+- [ ] Matrix class: Templatized arbitrary size MxN matrix
+- [ ] Matrix class: Initialize members from T** input
+- [ ] Matrix class: Multiply matrix x matrix
+- [ ] Matrix class: Multiply matrix x vector Mx1
+- [ ] Matrix class: Multiply matrix x vector Mx1
 
 
 ## As of 29-Nov-23
-[ ] Matrix class: Templatized arbitrary size M
+- [ ] Matrix class: Templatized arbitrary size M
 
 
 # Git Usage (This project)
 ## Set the PAT from the command line
-git remote set-url origin https://junmendoza:<token>@github.com/junmendoza/NNPlayground.git
-
+```
+git remote set-url origin https://junmendoza:[TOKEN]@github.com/junmendoza/NNPlayground.git
+```
 ## Push commit to github
+```
 git push -u origin main
-
+```
 
 
 # Image classifier NN overview
@@ -64,10 +66,10 @@ http://yann.lecun.com/exdb/mnist/
 
 ## MNIST image format
 ### MNIST are a set of binray files containing image data that can be used to test and run neural network training and inference
-#### train-images-idx3-ubyte: training set images 
-#### train-labels-idx1-ubyte: training set labels 
-#### t10k-images-idx3-ubyte:  test set images 
-#### t10k-labels-idx1-ubyte:  test set labels
+- train-images-idx3-ubyte: training set images
+- train-labels-idx1-ubyte: training set labels
+- t10k-images-idx3-ubyte:  test set images
+- t10k-labels-idx1-ubyte:  test set labels
 
 ## Image file 
 ### Header
@@ -80,7 +82,7 @@ http://yann.lecun.com/exdb/mnist/
     The labels values are 0 to 9. 
 
 ## MNIST data structure
-
+```
 ImageHeader
     int magic_number; // Compare with training/inference header constant 
     int items;        // Compare with label count
@@ -135,12 +137,10 @@ void Model::backpropagate(const TrainingParams& params, vector<Layer>& layers)
     // Adjust weights and biases based on training parameters
 }
 
-uint32_t Model::train(
-    const vector<const float*>& training_data,
-    const vector<uint32_t>& label)
+uint32_t Model::train(const vector<const float*>& training_data, const uint32_t* label)
 {
     initLayers();
-    for (!int n = 0; n < MAX_ITERATIONS; ++n) {
+    for (int n = 0; n < MAX_ITERATIONS; ++n) {
         forward(training_data, layers);
         TrainingParams params = getTrainingParams(layers);
         if (params.done) {
@@ -150,6 +150,5 @@ uint32_t Model::train(
     }
     return n;
 } 
-
-    
+```
 

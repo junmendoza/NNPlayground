@@ -16,7 +16,7 @@ public:
     NNLayer(void);
     ~NNLayer(void);
 
-private:
+public:
     uint32_t  label;         // image identifier
     float*    activation;    // activation vector
     float**   weight_matrix; // weight matrix [layer.neurons X prev_layer.neurons]
