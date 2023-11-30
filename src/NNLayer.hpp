@@ -17,10 +17,15 @@ public:
     ~NNLayer(void);
 
 public:
-    uint32_t  label;         // image identifier
-    float*    activation;    // activation vector
-    float**   weight_matrix; // weight matrix [layer.neurons X prev_layer.neurons]
-    uint8_t*  bias;          // bias vector
+    uint32_t  _label;           // Image identifier
+
+    uint32_t  _neurons;         // Neuron count
+    float*    _activation;      // Activation vector
+    uint8_t*  _bias;            // Bias vector
+
+    uint32_t  _mat_row;         // Weight matric row count
+    uint32_t  _mat_col;         // Weight matric column count
+    float**   _mat_weights;     // Weight matrix [layer.neurons X prev_layer.neurons]
 };
 
 

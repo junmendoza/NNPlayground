@@ -41,8 +41,8 @@ public:
     ~MNISTData(void);
 public:
     bool loadData(void);
-    uint8_t* getLabel(void) const { return raw_label_data; }
-    std::vector<float*> getActivation(void) const { return activation_data; }
+    uint8_t* getLabel(void) const { return _raw_label_data; }
+    std::vector<float*> getActivation(void) const { return _activation_data; }
     
 private:
     bool loadRawImageData(void);
@@ -53,16 +53,16 @@ private:
     void normalizeData(void);
 
 private:
-    std::string image_file;
-    std::string label_file;
+    std::string _image_file;
+    std::string _label_file;
 
-    ImageHeader* image_header;
-    LabelHeader* label_header;
+    ImageHeader* _image_header;
+    LabelHeader* _label_header;
 
-    uint8_t* raw_image_data;
-    uint8_t* raw_label_data;
+    uint8_t* _raw_image_data;
+    uint8_t* _raw_label_data;
 
-    std::vector<float*> activation_data;
+    std::vector<float*> _activation_data;
 };
 
 #endif /* MNISTData_hpp */

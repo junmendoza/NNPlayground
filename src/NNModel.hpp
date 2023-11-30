@@ -25,21 +25,21 @@ static const uint32_t INNER_LAYERS = 2;
 static const uint32_t LAYERS = INNER_LAYERS + 2;
 
 public:
-    NNModel(uint32_t num_layers_ = LAYERS);
+    NNModel(uint32_t num_layers = LAYERS);
     ~NNModel(void);
     
 public:
-    void setInputLayerActivation(const float* training_data_, NNLayer& input_layer_);
-    TrainingParams getTrainingParams(NNLayer* layers_);
-    float* sigmoid(float* activation_);
-    void backpropagate(const TrainingParams& params_);
-    void forward(const std::vector<float*>& training_data_);
-    uint32_t train(const std::vector<float*>& training_data_, const uint8_t* label_);
-    void infer(const std::vector<float*>& inference_data_, const uint8_t* label_);
+    void setInputLayerActivation(const float* training_data_, NNLayer& input_layer);
+    TrainingParams getTrainingParams(NNLayer* layers);
+    float* sigmoid(float* activation);
+    void backpropagate(const TrainingParams& params);
+    void forward(const std::vector<float*>& training_data);
+    uint32_t train(const std::vector<float*>& training_data, const uint8_t* label);
+    void infer(const std::vector<float*>& inference_data, const uint8_t* label);
 
 private:
-    uint32_t num_layers;
-    NNLayer* layers;
+    uint32_t _num_layers;
+    NNLayer* _layers;
     
 };
 
