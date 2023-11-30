@@ -32,21 +32,19 @@
 - [x] Where is the label used? Which function? Layer is passed to the train function, along with the pixel image
 
 ## As of 25-Nov-23
-- [ ] Matrix class: Templatized arbitrary size MxN matrix
-- [ ] Matrix class: Initialize members from T** input
-- [ ] Matrix class: Multiply matrix x matrix
-- [ ] Matrix class: Multiply matrix x vector Mx1
+- [x] Matrix class: Templatized arbitrary size MxN matrix
+- [x] Matrix class: Initialize members from T** input
 - [ ] Matrix class: Multiply matrix x vector Mx1
 
 
-## As of 29-Nov-23
-- [ ] Matrix class: Templatized arbitrary size M
+## As of 30-Nov-23
+- [x] Vector class: Templatized arbitrary size 
 
 
 # Git Usage (This project)
 ## Set the PAT from the command line
 ```
-git remote set-url origin https://junmendoza:[TOKEN]@github.com/junmendoza/NNPlayground.git
+git remote set-url origin https://junmendoza:<TOKEN>@github.com/junmendoza/NNPlayground.git
 ```
 ## Push commit to github
 ```
