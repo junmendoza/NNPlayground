@@ -31,11 +31,11 @@ public:
 public:
     void setInputLayerActivation(const float* training_data_, NNLayer& input_layer_);
     TrainingParams getTrainingParams(NNLayer* layers_);
-    float* sigmoid(float* activation);
-    void backpropagate(const TrainingParams& params);
-    void forward(const std::vector<float*>& training_data);
-    uint32_t train(const std::vector<float*>& training_data, const uint8_t* label);
-    void infer(const std::vector<float*>& inference_data, const uint8_t* label);
+    float* sigmoid(float* activation_);
+    void backpropagate(const TrainingParams& params_);
+    void forward(const std::vector<float*>& training_data_);
+    uint32_t train(const std::vector<float*>& training_data_, const uint8_t* label_);
+    void infer(const std::vector<float*>& inference_data_, const uint8_t* label_);
 
 private:
     uint32_t num_layers;

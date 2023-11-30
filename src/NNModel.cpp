@@ -29,17 +29,17 @@ TrainingParams NNModel::getTrainingParams(NNLayer* layers_)
     return params;
 }
 
-float* NNModel::sigmoid(float* activation)
+float* NNModel::sigmoid(float* activation_)
 {
-    return activation;
+    return activation_;
 }
 
-void NNModel::forward(const std::vector<float*>& training_data)
+void NNModel::forward(const std::vector<float*>& training_data_)
 {
     // For every MNIST training data
-    for (int i = 0; i < training_data.size(); ++i) {
+    for (int i = 0; i < training_data_.size(); ++i) {
         // Assign current training data activation list to the input layer
-        setInputLayerActivation(training_data[i], layers[0]);
+        setInputLayerActivation(training_data_[i], layers[0]);
         for (int j = 0; j < num_layers; ++j) {
             //float* new_activation = layers[j].activation * layers[j].weight_matrix + layers[j].bias;
             float* new_activation = NULL;
@@ -48,16 +48,16 @@ void NNModel::forward(const std::vector<float*>& training_data)
     }
 }
 
-void NNModel::backpropagate(const TrainingParams& params)
+void NNModel::backpropagate(const TrainingParams& params_)
 {
     // Adjust weights and biases based on training parameters
 }
 
-uint32_t NNModel::train(const std::vector<float*>& training_data, const uint8_t* label)
+uint32_t NNModel::train(const std::vector<float*>& training_data_, const uint8_t* label_)
 {
     uint32_t iterations = 0;
     for (int iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
-        forward(training_data);
+        forward(training_data_);
         TrainingParams params = getTrainingParams(layers);
         if (params.done) {
             break;
@@ -67,7 +67,7 @@ uint32_t NNModel::train(const std::vector<float*>& training_data, const uint8_t*
     return iterations;
 }
 
-void NNModel::infer(const std::vector<float*>& inference_data, const uint8_t* label)
+void NNModel::infer(const std::vector<float*>& inference_data_, const uint8_t* label_)
 {
 }
 
