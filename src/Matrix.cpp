@@ -26,12 +26,17 @@ MatrixMN::~MatrixMN(void)
 }
 
 
-VectorN MatrixMN::mul(const VectorN& vec)
+VectorN MatrixMN::mul(const VectorN& rhs)
 {
-    VectorN vec_new(vec._size, NULL);
+    VectorN vec_new(rhs._size, NULL);
     for (int n = 0; n < vec_new._size; ++n) {
     }
     return vec_new;
+}
+
+VectorN MatrixMN::operator*(const VectorN& rhs)
+{
+    return mul(rhs);
 }
 
 }

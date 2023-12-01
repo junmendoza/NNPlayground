@@ -21,7 +21,8 @@ public:
     MatrixMN(size_t rows, size_t cols, double** data);
     ~MatrixMN(void);
 
-    VectorN mul(const VectorN& vec);
+    VectorN mul(const VectorN& rhs);
+    VectorN operator*(const VectorN& rhs);
 
 public:
     size_t   _rows;

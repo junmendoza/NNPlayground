@@ -32,13 +32,12 @@
 - [x] Where is the label used? Which function? Layer is passed to the train function, along with the pixel image
 
 ## As of 25-Nov-23
-- [x] Matrix class: Templatized arbitrary size MxN matrix
-- [x] Matrix class: Initialize members from T** input
+- [x] Matrix class: Arbitrary size MxN matrix
 - [ ] Matrix class: Multiply matrix x vector Mx1
 
 
 ## As of 30-Nov-23
-- [x] Vector class: Templatized arbitrary size 
+- [x] Vector class: Arbitrary size vector
 
 
 # Git Usage (This project)
@@ -53,11 +52,9 @@ git push -u origin main
 
 
 # Image classifier NN overview
-## Input layer: The number of neuron are the number of image pixels i.e. If input image is 28x28 pixels, then input layer has 28x28=784 neurons
-## A neuron holds a number betwen 0 and 1 known as the activation
-## Pixel data must be normalized to a value between 0 and 1 and set as the activation of each neuron in the input layer
-## 
-  
+- The number of neuron are the number of image pixels i.e. If input image is 28x28 pixels, then input layer has 28x28=784 neurons
+- A neuron holds a number betwen 0 and 1 known as the activation
+- Pixel data must be normalized to a value between 0 and 1 and set as the activation of each neuron in the input layer
 
 # MNIST
 http://yann.lecun.com/exdb/mnist/

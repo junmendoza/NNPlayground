@@ -32,7 +32,7 @@ public:
 public:
     void setInputLayerActivation(const double* training_data_, NNLayer& input_layer);
     TrainingParams getTrainingParams(NNLayer* layers);
-    double* sigmoid(double* activation);
+    Math::VectorN sigmoid(const Math::VectorN& activation);
     void backpropagate(const TrainingParams& params);
     void forward(const std::vector<double*>& training_data);
     uint32_t train(const std::vector<double*>& training_data, const uint8_t* label);

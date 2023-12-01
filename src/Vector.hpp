@@ -20,7 +20,8 @@ public:
     ~VectorN(void);
 
 public:
-    VectorN add(const VectorN& vec);
+    VectorN add(const VectorN& rhs);
+    VectorN operator+(const VectorN& rhs);
 
 public:
     size_t  _size;

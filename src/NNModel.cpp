@@ -29,7 +29,7 @@ TrainingParams NNModel::getTrainingParams(NNLayer* layers)
     return params;
 }
 
-double* NNModel::sigmoid(double* activation)
+Math::VectorN NNModel::sigmoid(const Math::VectorN& activation)
 {
     return activation;
 }
@@ -37,13 +37,15 @@ double* NNModel::sigmoid(double* activation)
 void NNModel::forward(const std::vector<double*>& training_data)
 {
     // For every MNIST training data
-    for (int i = 0; i < training_data.size(); ++i) {
+    for (size_t i = 0; i < training_data.size(); ++i) {
         // Assign current training data activation list to the input layer
         setInputLayerActivation(training_data[i], _layers[0]);
-        for (int j = 0; j < _num_layers; ++j) {
-            Math::VectorN new_activation; //_layers[j]._weights.mul(_layers[j]._activation);//.add(_layers[j]._bias);
-            //double* new_activation = NULL;
-            //_layers[j+1]._activation._data = sigmoid(new_activation);
+
+        // Calculate activation for all inner layers and output layer
+        for (size_t j = 0; j < _num_layers; ++j) {
+            Math::VectorN weighted = _layers[j]._weights * _layers[j]._activation;
+            Math::VectorN weighted_bias = weighted + _layers[j]._bias;
+            _layers[j+1]._activation = sigmoid(weighted_bias);
         }
     }
 }
