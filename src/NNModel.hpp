@@ -30,13 +30,12 @@ public:
     ~NNModel(void);
     
 public:
-    void setInputLayerActivation(const double* training_data_, NNLayer& input_layer);
     TrainingParams getTrainingParams(NNLayer* layers);
     Math::VectorN sigmoid(const Math::VectorN& activation);
     void backpropagate(const TrainingParams& params);
-    void forward(const std::vector<double*>& training_data);
-    uint32_t train(const std::vector<double*>& training_data, const uint8_t* label);
-    void infer(const std::vector<double*>& inference_data, const uint8_t* label);
+    void forward(const std::vector<Math::VectorN*>& training_data);
+    uint32_t train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label);
+    void infer(const std::vector<Math::VectorN*>& inference_data, const uint8_t* label);
 
 private:
     uint32_t _num_layers;

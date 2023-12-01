@@ -21,5 +21,4 @@ struct NNLayer
     Math::MatrixMN _weights;        // Weight matrix [layer.neurons X prev_layer.neurons]
 };
 
-
 #endif /* NNLayer_hpp */

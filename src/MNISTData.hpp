@@ -10,16 +10,16 @@
 
 #include <cstring>
 #include "Utils.hpp"
-
+#include "Vector.hpp"
 
 class MNISTData
 {
 
-static const uint32_t MNIST_IMAGE_FILE_ID   = 0x00000803;
-static const uint32_t MNIST_LABEL_FILE_ID   = 0x00000801;
-static const uint32_t MNIST_IMAGE_WIDTH     = 28;
-static const uint32_t MNIST_IMAGE_HEIGHT    = 28;
-static const uint32_t PIXELS_PER_IMAGE      = MNIST_IMAGE_WIDTH * MNIST_IMAGE_HEIGHT;
+static const size_t MNIST_IMAGE_FILE_ID   = 0x00000803;
+static const size_t MNIST_LABEL_FILE_ID   = 0x00000801;
+static const size_t MNIST_IMAGE_WIDTH     = 28;
+static const size_t MNIST_IMAGE_HEIGHT    = 28;
+static const size_t PIXELS_PER_IMAGE      = MNIST_IMAGE_WIDTH * MNIST_IMAGE_HEIGHT;
     
 struct ImageHeader
 {
@@ -42,7 +42,7 @@ public:
 public:
     bool loadData(void);
     uint8_t* getLabel(void) const { return _raw_label_data; }
-    std::vector<double*> getActivation(void) const { return _activation_data; }
+    std::vector<Math::VectorN*> getActivation(void) const { return _activation_data; }
     
 private:
     bool loadRawImageData(void);
@@ -62,7 +62,7 @@ private:
     uint8_t* _raw_image_data;
     uint8_t* _raw_label_data;
 
-    std::vector<double*> _activation_data;
+    std::vector<Math::VectorN*> _activation_data;
 };
 
 #endif /* MNISTData_hpp */

@@ -25,13 +25,16 @@ MatrixMN::~MatrixMN(void)
 {
 }
 
-
 VectorN MatrixMN::mul(const VectorN& rhs)
 {
-    VectorN vec_new(rhs._size, NULL);
-    for (int n = 0; n < vec_new._size; ++n) {
+    assert(rhs._size == _cols);
+    VectorN vec(rhs._size);
+    for (int m = 0; m < vec._size; ++m) {
+        for (int n = 0; n < vec._size; ++n) {
+            vec._data[m] = rhs._data[m] * _data[m][n];
+        }
     }
-    return vec_new;
+    return vec;
 }
 
 VectorN MatrixMN::operator*(const VectorN& rhs)

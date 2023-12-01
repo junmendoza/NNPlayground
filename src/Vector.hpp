@@ -16,7 +16,7 @@ class VectorN
 {
 public:
     VectorN(void);
-    VectorN(size_t size, double* data);
+    VectorN(size_t size);
     ~VectorN(void);
 
 public:

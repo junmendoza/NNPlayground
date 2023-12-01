@@ -21,7 +21,7 @@ bool TrainModel(NNModel** model)
     if (!mnist_train_data.loadData()) {
         return false;
     }
-    std::vector<double*> training_data = mnist_train_data.getActivation();
+    std::vector<Math::VectorN*> training_data = mnist_train_data.getActivation();
     uint8_t* label_data = mnist_train_data.getLabel();
     uint32_t iterations = (*model)->train(training_data, label_data);
     Utils::Trace::strace("Image training took %d iterations.\n", iterations);
@@ -39,7 +39,7 @@ bool TestModel(NNModel** model)
     }
     
     // Test NN using inference data
-    std::vector<double*> inference_data = mnist_infer_data.getActivation();
+    std::vector<Math::VectorN*> inference_data = mnist_infer_data.getActivation();
     uint8_t* label_data = mnist_infer_data.getLabel();
     (*model)->infer(inference_data, label_data);
     return true;

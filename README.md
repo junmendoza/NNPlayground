@@ -1,7 +1,7 @@
 # README NNPlayground
 
 # Tasklist 
-## As of 14-Nov-23
+## 14-Nov-23
 - [x] Function: MNIST::loadDatabase(...)
 - [x] Function: MNIST::loadImageFile(...)
 - [x] Function: MNIST::loadLabelFile(...)
@@ -9,36 +9,39 @@
 - [x] Document: Outline MNIST single image format
 - [x] Document: Outline MNIST data structure
 
-## As of 15-Nov-23
+## 15-Nov-23
 - [x] Download mnist training set and example binaries
 
 
-## As of 20-Nov-23
+## 20-Nov-23
 - [x] Whats the train function params?
 - [x] How are the 60k image and labels fed into the train function?
 - [x] What does 1 train iteration need?
 
-## As of 22-Nov-23
+## 22-Nov-23
 - [x] Setup function: Input layer. Initialize and normalize
 - [x] Setup function: Normalize pixel data and assign to input layer
 
-## As of 23-Nov-23
+## 23-Nov-23
 - [x] forward function
 - [x] backpropagate function
 - [x] Train function: forward and backpropagate
 
 
-## As of 24-Nov-23
+## 24-Nov-23
 - [x] Where is the label used? Which function? Layer is passed to the train function, along with the pixel image
 
-## As of 25-Nov-23
+## 25-Nov-23
 - [x] Matrix class: Arbitrary size MxN matrix
-- [ ] Matrix class: Multiply matrix x vector Mx1
+- [x] Matrix class: Multiply matrix x vector
 
 
-## As of 30-Nov-23
+## 30-Nov-23
 - [x] Vector class: Arbitrary size vector
 
+
+## 01-Dec-23
+- [ ] Init layer function
 
 # Git Usage (This project)
 ## Set the PAT from the command line
