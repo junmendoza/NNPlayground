@@ -58,9 +58,9 @@ void MNISTData::normalizeData(void)
     assert(NULL != _raw_image_data);
     uint32_t raw_data_idx = 0;
     for (uint32_t i = 0; i < _image_header->items; ++i) {
-        float* normalized_data = new float[PIXELS_PER_IMAGE];
+        double* normalized_data = new double[PIXELS_PER_IMAGE];
         for (uint32_t j = 0; j < PIXELS_PER_IMAGE; ++j) {
-            float activation = ((float)_raw_image_data[++raw_data_idx]) / 255.0f;
+            double activation = ((double)_raw_image_data[++raw_data_idx]) / 255.0f;
             normalized_data[j] = activation;
         }
         _activation_data.push_back(normalized_data);

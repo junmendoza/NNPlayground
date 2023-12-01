@@ -9,8 +9,9 @@
 #define NNModel_hpp
 
 #include <vector>
+#include "Vector.hpp"
+#include "Matrix.hpp"
 #include "NNLayer.hpp"
-
 
 struct TrainingParams {
     bool done;
@@ -29,13 +30,13 @@ public:
     ~NNModel(void);
     
 public:
-    void setInputLayerActivation(const float* training_data_, NNLayer& input_layer);
+    void setInputLayerActivation(const double* training_data_, NNLayer& input_layer);
     TrainingParams getTrainingParams(NNLayer* layers);
-    float* sigmoid(float* activation);
+    double* sigmoid(double* activation);
     void backpropagate(const TrainingParams& params);
-    void forward(const std::vector<float*>& training_data);
-    uint32_t train(const std::vector<float*>& training_data, const uint8_t* label);
-    void infer(const std::vector<float*>& inference_data, const uint8_t* label);
+    void forward(const std::vector<double*>& training_data);
+    uint32_t train(const std::vector<double*>& training_data, const uint8_t* label);
+    void infer(const std::vector<double*>& inference_data, const uint8_t* label);
 
 private:
     uint32_t _num_layers;

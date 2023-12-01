@@ -12,7 +12,7 @@
 
 static const std::string mnist_path = "/Users/junmendoza/NNPlayground/mnist/";
 
-bool TrainModel(NNModel** model_)
+bool TrainModel(NNModel** model)
 {
     // Load training data
     std::string mnist_train_image = mnist_path + "train-images.idx3-ubyte";
@@ -21,14 +21,14 @@ bool TrainModel(NNModel** model_)
     if (!mnist_train_data.loadData()) {
         return false;
     }
-    std::vector<float*> training_data = mnist_train_data.getActivation();
+    std::vector<double*> training_data = mnist_train_data.getActivation();
     uint8_t* label_data = mnist_train_data.getLabel();
-    uint32_t iterations = (*model_)->train(training_data, label_data);
+    uint32_t iterations = (*model)->train(training_data, label_data);
     Utils::Trace::strace("Image training took %d iterations.\n", iterations);
     return true;
 }
 
-bool TestModel(NNModel** model_)
+bool TestModel(NNModel** model)
 {
     // Load inference data
     std::string mnist_infer_image = mnist_path + "t10k-images.idx3-ubyte";
@@ -39,9 +39,9 @@ bool TestModel(NNModel** model_)
     }
     
     // Test NN using inference data
-    std::vector<float*> inference_data = mnist_infer_data.getActivation();
+    std::vector<double*> inference_data = mnist_infer_data.getActivation();
     uint8_t* label_data = mnist_infer_data.getLabel();
-    (*model_)->infer(inference_data, label_data);
+    (*model)->infer(inference_data, label_data);
     return true;
 }
 

@@ -12,20 +12,19 @@
 
 namespace Math
 {
-
-template <typename T>
 class VectorN
 {
 public:
-    VectorN(size_t size, float* data);
-    virtual ~VectorN(void);
+    VectorN(void);
+    VectorN(size_t size, double* data);
+    ~VectorN(void);
 
 public:
-    VectorN<T> add(const VectorN<T>& vec);
+    VectorN add(const VectorN& vec);
 
 public:
     size_t  _size;
-    T*      _data;
+    double* _data;
 };
 
 };

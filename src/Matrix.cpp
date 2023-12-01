@@ -10,24 +10,25 @@
 namespace Math
 {
 
-template <typename T>
-MatrixMN<T>::MatrixMN(size_t rows, size_t cols, T** data)
+MatrixMN::MatrixMN(void)
+{
+}
+
+MatrixMN::MatrixMN(size_t rows, size_t cols, double** data)
     : _rows(rows),
       _cols(cols),
       _data(data)
 {
 }
 
-template <typename T>
-MatrixMN<T>::~MatrixMN(void)
+MatrixMN::~MatrixMN(void)
 {
 }
 
 
-template <typename T>
-VectorN<T> MatrixMN<T>::mul(const VectorN<T>& vec)
+VectorN MatrixMN::mul(const VectorN& vec)
 {
-    VectorN<T> vec_new(vec._size, NULL);
+    VectorN vec_new(vec._size, NULL);
     for (int n = 0; n < vec_new._size; ++n) {
     }
     return vec_new;

@@ -95,14 +95,14 @@ LabelHeader
 class Layer
 {
     uint32_t  label;         // image identifier
-    float*    activation;    // activation vector
-    float**   weight_matrix; // weight matrix [layer.neurons X prev_layer.neurons]
+    double*    activation;    // activation vector
+    double**   weight_matrix; // weight matrix [layer.neurons X prev_layer.neurons]
     uint8_t*  bias;          // bias vector 
 }
 
 // Image file
 ImageHeader image_header = parseImageHeader(train-images-idx3-ubyte)
-vector<float*> image_list = parseImageData(train-images-idx3-ubyte)
+vector<double*> image_list = parseImageData(train-images-idx3-ubyte)
 
 // Label file
 LabelHeader label_header = parseLabelHeader(train-labels-idx1-ubyte)
@@ -113,12 +113,12 @@ void Model::initLayers(void)
     // Init weights, biases, activation to its default values
 }
 
-void Model::setInputLayerActivation(const float* training_data, Layer& input_layer)
+void Model::setInputLayerActivation(const double* training_data, Layer& input_layer)
 {
     // Set layer activation list from training_data activation list
 }
 
-void Model::forward(const vector<const float*>& train_data, vector<Layer>& layers)
+void Model::forward(const vector<const double*>& train_data, vector<Layer>& layers)
 {
     // For every MNIST training data
     for (int i = 0 to train_data.cnt) {
@@ -135,7 +135,7 @@ void Model::backpropagate(const TrainingParams& params, vector<Layer>& layers)
     // Adjust weights and biases based on training parameters
 }
 
-uint32_t Model::train(const vector<const float*>& training_data, const uint32_t* label)
+uint32_t Model::train(const vector<const double*>& training_data, const uint32_t* label)
 {
     initLayers();
     for (int n = 0; n < MAX_ITERATIONS; ++n) {

@@ -42,7 +42,7 @@ public:
 public:
     bool loadData(void);
     uint8_t* getLabel(void) const { return _raw_label_data; }
-    std::vector<float*> getActivation(void) const { return _activation_data; }
+    std::vector<double*> getActivation(void) const { return _activation_data; }
     
 private:
     bool loadRawImageData(void);
@@ -62,7 +62,7 @@ private:
     uint8_t* _raw_image_data;
     uint8_t* _raw_label_data;
 
-    std::vector<float*> _activation_data;
+    std::vector<double*> _activation_data;
 };
 
 #endif /* MNISTData_hpp */

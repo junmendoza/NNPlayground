@@ -14,19 +14,19 @@
 namespace Math
 {
 
-template <typename T>
 class MatrixMN
 {
 public:
-    MatrixMN(size_t rows, size_t cols, T** data);
+    MatrixMN(void);
+    MatrixMN(size_t rows, size_t cols, double** data);
     ~MatrixMN(void);
 
-    VectorN<T> mul(const VectorN<T>& vec);
+    VectorN mul(const VectorN& vec);
 
 public:
-    size_t  _rows;
-    size_t  _cols;
-    T** _data;
+    size_t   _rows;
+    size_t   _cols;
+    double** _data;
 };
 
 }

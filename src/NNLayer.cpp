@@ -6,11 +6,3 @@
 //
 
 #include "NNLayer.hpp"
-
-NNLayer::NNLayer(void)
-{
-}
-
-NNLayer::~NNLayer(void)
-{
-}
