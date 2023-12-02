@@ -18,7 +18,13 @@ struct NNLayer
     size_t         _neurons;        // Neuron count
     Math::VectorN  _activation;     // Activation vector
     Math::VectorN  _bias;           // Bias vector
-    Math::MatrixMN _weights;        // Weight matrix [layer.neurons X prev_layer.neurons]
+
+    // Weight matrix [layer.neurons X nextlayer.neurons]
+    // The rows are the number of neurons in the current layer
+    // The cols are the number of neurons in the next resulting layer
+    // The weight matrix is multipled with the activation list in the current layer
+    // The output is the activation list in the next layer
+    Math::MatrixMN _weights;
 };
 
 #endif /* NNLayer_hpp */

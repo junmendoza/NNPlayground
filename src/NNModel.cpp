@@ -28,8 +28,7 @@ void NNModel::setupLayers(size_t input_layer_neurons)
     // c = layer2.neurons
     _layers[LAYER1]._weights.setup(LAYER1_NEURONS, OUTPUT_LAYER_NEURONS);
 
-    // Last layer has no weight matrix
-    _layers[OUTPUT]._weights.setup(0, 0);
+    // Output layer has no weight matrix
 }
 
 Math::VectorN NNModel::sigmoid(const Math::VectorN& activation)
@@ -47,6 +46,7 @@ void NNModel::forward(const std::vector<Math::VectorN*>& training_data)
         // Calculate activation for all inner layers and output layer
         for (size_t j = 0; j < _num_layers; ++j)
         {
+//#define DEBUGME
 #ifdef DEBUGME
             for (int n = 0; n < 200; ++n) {
                 if (_layers[j]._activation._data[n] > 0.0f) {
