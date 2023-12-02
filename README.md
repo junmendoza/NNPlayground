@@ -59,6 +59,10 @@ git push -u origin main
 - A neuron holds a number betwen 0 and 1 known as the activation
 - Pixel data must be normalized to a value between 0 and 1 and set as the activation of each neuron in the input layer
 
+## Weight Matrix
+- A weight matrix represents the weights connected from 2 layers
+- 
+
 # MNIST
 http://yann.lecun.com/exdb/mnist/
 

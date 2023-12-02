@@ -19,26 +19,35 @@ struct TrainingParams {
 
 class NNModel
 {
-static const uint32_t MAX_ITERATIONS = 10;
+enum LAYER_ID {
+    INPUT,
+    LAYER1,
+    OUTPUT,
+    COUNT
+};
 
-// Total layers = input + inner + output
-static const uint32_t INNER_LAYERS = 2;
-static const uint32_t LAYERS = INNER_LAYERS + 2;
+static const size_t MAX_ITERATIONS = 10;
+static const size_t LAYER1_NEURONS = 16;
+static const size_t OUTPUT_LAYER_NEURONS = 10;
 
 public:
-    NNModel(uint32_t num_layers = LAYERS);
+    NNModel(size_t num_layers = LAYER_ID::COUNT);
     ~NNModel(void);
     
 public:
-    TrainingParams getTrainingParams(NNLayer* layers);
+    void setupLayers(size_t input_layer_neurons);
+
     Math::VectorN sigmoid(const Math::VectorN& activation);
-    void backpropagate(const TrainingParams& params);
     void forward(const std::vector<Math::VectorN*>& training_data);
-    uint32_t train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label);
+    size_t train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label);
     void infer(const std::vector<Math::VectorN*>& inference_data, const uint8_t* label);
 
+    double calculateCost(const NNLayer* layers);
+    TrainingParams getTrainingParams(const NNLayer* layers);
+    void backpropagate(const TrainingParams& params);
+
 private:
-    uint32_t _num_layers;
+    size_t   _num_layers;
     NNLayer* _layers;
     
 };

@@ -7,7 +7,7 @@
 
 #include "NNModel.hpp"
 
-NNModel::NNModel(uint32_t num_layers)
+NNModel::NNModel(size_t num_layers)
     : _num_layers(num_layers)
 {
     _layers = new NNLayer[_num_layers];
@@ -18,10 +18,18 @@ NNModel::~NNModel(void)
     SAFE_DELETE_ARRAY(_layers);
 }
 
-TrainingParams NNModel::getTrainingParams(NNLayer* layers)
+void NNModel::setupLayers(size_t input_layer_neurons)
 {
-    TrainingParams params;
-    return params;
+    // r = layer0.neurons
+    // c = layer1.neurons
+    _layers[INPUT ]._weights.setup(input_layer_neurons, LAYER1_NEURONS);
+
+    // r = layer1.neurons
+    // c = layer2.neurons
+    _layers[LAYER1]._weights.setup(LAYER1_NEURONS, OUTPUT_LAYER_NEURONS);
+
+    // Last layer has no weight matrix
+    _layers[OUTPUT]._weights.setup(0, 0);
 }
 
 Math::VectorN NNModel::sigmoid(const Math::VectorN& activation)
@@ -53,13 +61,11 @@ void NNModel::forward(const std::vector<Math::VectorN*>& training_data)
     }
 }
 
-void NNModel::backpropagate(const TrainingParams& params)
+size_t NNModel::train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label)
 {
-    // Adjust weights and biases based on training parameters
-}
+    size_t input_layer_neurons = training_data[0]->_size;
+    setupLayers(input_layer_neurons);
 
-uint32_t NNModel::train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label)
-{
     uint32_t iterations = 0;
     for (iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
         forward(training_data);
@@ -76,3 +82,21 @@ void NNModel::infer(const std::vector<Math::VectorN*>& inference_data, const uin
 {
 }
 
+double NNModel::calculateCost(const NNLayer* layers)
+{
+    return 0.0f;
+}
+
+TrainingParams NNModel::getTrainingParams(const NNLayer* layers)
+{
+    double cost = calculateCost(layers);
+    UNUSED(cost);
+
+    TrainingParams params;
+    return params;
+}
+
+void NNModel::backpropagate(const TrainingParams& params)
+{
+    // Adjust weights and biases based on training parameters
+}

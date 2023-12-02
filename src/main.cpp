@@ -23,7 +23,7 @@ bool TrainModel(NNModel** model)
     }
     std::vector<Math::VectorN*> training_data = mnist_train_data.getActivation();
     uint8_t* label_data = mnist_train_data.getLabel();
-    uint32_t iterations = (*model)->train(training_data, label_data);
+    size_t iterations = (*model)->train(training_data, label_data);
     Utils::Trace::strace("Image training took %d iterations.\n", iterations);
     return true;
 }

@@ -10,6 +10,7 @@
 
 #include <string>
 
+#define UNUSED(x) (void)x;
 #define SAFE_DELETE(ptr) if (NULL != ptr) { delete ptr; ptr = NULL; }
 #define SAFE_DELETE_ARRAY(ptr) if (NULL != ptr) { delete[] ptr; ptr = NULL; }
 

@@ -18,9 +18,10 @@ class MatrixMN
 {
 public:
     MatrixMN(void);
-    MatrixMN(size_t rows, size_t cols, double** data);
+    MatrixMN(size_t rows, size_t cols);
     ~MatrixMN(void);
 
+    void setup(size_t rows, size_t cols);
     VectorN mul(const VectorN& rhs);
     VectorN operator*(const VectorN& rhs);
 
