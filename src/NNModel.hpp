@@ -37,7 +37,7 @@ public:
 public:
     void setupLayers(size_t input_layer_neurons);
 
-    Math::VectorN sigmoid(const Math::VectorN& activation);
+    void sigmoid(Math::VectorN& activation);
     void forward(const std::vector<Math::VectorN*>& training_data);
     size_t train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label);
     void infer(const std::vector<Math::VectorN*>& inference_data, const uint8_t* label);

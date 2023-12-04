@@ -14,6 +14,8 @@
 
 struct NNLayer
 {
+    NNLayer(void){}
+    ~NNLayer(void){}
     size_t         _label;          // Image identifier
     size_t         _neurons;        // Neuron count
     Math::VectorN  _activation;     // Activation vector

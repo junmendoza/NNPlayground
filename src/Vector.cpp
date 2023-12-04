@@ -14,6 +14,20 @@ VectorN::VectorN(void)
 {
 }
 
+VectorN::VectorN(const VectorN& rhs)
+    : _size(rhs._size),
+      _data(new double[rhs._size])
+{
+    for (size_t n = 0; n < _size; ++n) {
+        _data[n] = rhs._data[n];
+    }
+}
+
+VectorN VectorN::operator=(const VectorN& rhs)
+{
+    return VectorN(rhs);
+}
+
 VectorN::VectorN(size_t size)
     : _size(size)
 {
@@ -25,18 +39,42 @@ VectorN::~VectorN(void)
     SAFE_DELETE_ARRAY(_data);
 }
 
-
-VectorN VectorN::add(const VectorN& rhs)
+void VectorN::setDefaultValue(double val)
 {
-    VectorN vec_new(rhs._size);
-    for (int n = 0; n < vec_new._size; ++n) {
-        vec_new._data[n] = _data[n] + rhs._data[n];
+    for (size_t n = 0; n < _size; ++n) {
+        _data[n] = val;
     }
-    return vec_new;
 }
-VectorN VectorN::operator+(const VectorN& rhs)
+
+void VectorN::initialize(size_t size, double val)
 {
-    return add(rhs);
+    assert(0 == _size);
+    assert(NULL == _data);
+    _size = size;
+    _data = new double[_size];
+    setDefaultValue(val);
 }
+
+void VectorN::add(const VectorN& rhs)
+{
+    assert(_size == rhs._size);
+    for (size_t n = 0; n < _size; ++n) {
+        _data[n] = _data[n] + rhs._data[n];
+    }
+}
+
+void VectorN::mul(const MatrixMN& mat)
+{
+    assert(_size == mat._cols);
+    size_t c, r;
+    for (c = 0; c < mat._cols; ++c) {
+        double accumulate = 0.0f;
+        for (r = 0; r < mat._rows; ++r) {
+            accumulate = accumulate + (_data[r] * mat._data[r][c]);
+        }
+        _data[r] = accumulate;
+    }
+}
+
 
 }

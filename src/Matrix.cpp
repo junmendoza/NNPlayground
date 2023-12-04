@@ -38,7 +38,6 @@ void MatrixMN::setup(size_t rows, size_t cols)
     for (size_t r = 0; r < _rows; ++r) {
         _data[r] = new double[_cols];
     }
-    setDefaultValue();
 //#define DEBUGME
 #ifdef DEBUGME
     //setDefaultTestValuesByRow();
@@ -47,11 +46,11 @@ void MatrixMN::setup(size_t rows, size_t cols)
 #endif
 }
 
-void MatrixMN::setDefaultValue(void)
+void MatrixMN::setDefaultValue(double val)
 {
     for (size_t c = 0; c < _cols; ++c) {
         for (size_t r = 0; r < _rows; ++r) {
-            _data[r][c] = DEFAULT_VAL;
+            _data[r][c] = val;
         }
     }
 }
@@ -92,19 +91,19 @@ void MatrixMN::print(size_t rows, size_t cols)
     }
 }
 
-VectorN MatrixMN::mul(const VectorN& rhs)
+VectorN MatrixMN::mul(const VectorN& vec)
 {
-    assert(rhs._size == _cols);
-    VectorN vec(rhs._size);
+    assert(vec._size == _rows);
+    VectorN new_vec(vec._size);
     size_t c, r;
-    for (c = 0; c < vec._size; ++c) {
+    for (c = 0; c < _cols; ++c) {
         double accumulate = 0.0f;
-        for (r = 0; r < vec._size; ++r) {
-            accumulate = accumulate + (rhs._data[r] * _data[r][c]);
+        for (r = 0; r < _rows; ++r) {
+            accumulate = accumulate + (vec._data[r] * _data[r][c]);
         }
-        vec._data[r] = accumulate;
+        new_vec._data[r] = accumulate;
     }
-    return vec;
+    return new_vec;
 }
 
 VectorN MatrixMN::operator*(const VectorN& rhs)

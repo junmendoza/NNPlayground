@@ -23,28 +23,40 @@ void NNModel::setupLayers(size_t input_layer_neurons)
     // r = layer0.neurons
     // c = layer1.neurons
     _layers[INPUT ]._weights.setup(input_layer_neurons, LAYER1_NEURONS);
+    _layers[INPUT ]._weights.setDefaultValue(0.1);
+    _layers[INPUT ]._bias.initialize(input_layer_neurons, 0.2);
+    _layers[INPUT ]._activation.initialize(input_layer_neurons, 0.0);
 
     // r = layer1.neurons
     // c = layer2.neurons
     _layers[LAYER1]._weights.setup(LAYER1_NEURONS, OUTPUT_LAYER_NEURONS);
+    _layers[LAYER1]._weights.setDefaultValue(0.3);
+    _layers[LAYER1]._bias.initialize(LAYER1_NEURONS, 0.4);
+    _layers[LAYER1]._activation.initialize(LAYER1_NEURONS, 0.0);
 
     // Output layer has no weight matrix
+    _layers[OUTPUT]._bias.initialize(OUTPUT_LAYER_NEURONS, 0.0);
+    _layers[OUTPUT]._activation.initialize(OUTPUT_LAYER_NEURONS, 0.0);
 }
 
-Math::VectorN NNModel::sigmoid(const Math::VectorN& activation)
+void NNModel::sigmoid(Math::VectorN& activation)
 {
-    return activation;
+    for (size_t n = 0; n < activation._size; ++n) {
+        // Todo apply sigmoid
+        activation._data[n] = activation._data[n];
+    }
 }
 
 void NNModel::forward(const std::vector<Math::VectorN*>& training_data)
 {
-    // For every MNIST training data
+    // For every MNIST training data, calculate the activation for all layers
     for (size_t i = 0; i < training_data.size(); ++i) {
+
         // Assign current training data activation list to the input layer
-        _layers[0]._activation = *training_data[i];
+        _layers[0]._activation._data = (*training_data[i])._data;
 
         // Calculate activation for all inner layers and output layer
-        for (size_t j = 0; j < _num_layers; ++j)
+        for (size_t j = 1; j < _num_layers; ++j)
         {
 //#define DEBUGME
 #ifdef DEBUGME
@@ -54,9 +66,12 @@ void NNModel::forward(const std::vector<Math::VectorN*>& training_data)
                 }
             }
 #endif
-            Math::VectorN weighted = _layers[j]._weights * _layers[j]._activation;
-            Math::VectorN weighted_bias = weighted + _layers[j]._bias;
-            _layers[j+1]._activation = sigmoid(weighted_bias);
+            // Calculating the layer activation
+            // * Applying matrix and vector arithmetic on the layer activation vector
+            // * Do not create multiple temp copies of the activation vector
+            _layers[j]._activation.mul(_layers[j-1]._weights);
+            _layers[j]._activation.add(_layers[j]._bias);
+            sigmoid(_layers[j]._activation);
         }
     }
 }

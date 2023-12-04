@@ -41,7 +41,13 @@
 
 
 ## 01-Dec-23
-- [ ] Init layer function
+- [x] Init layer function
+
+## 01-Dec-23
+- [ ] VectorN copy constructor and operator=
+- [ ] MatrixMN copy constructor and operator=
+- [ ] Test VectorN in forward function if it still SIGABORTs on assignment 
+
 
 # Git Usage (This project)
 ## Set the PAT from the command line
