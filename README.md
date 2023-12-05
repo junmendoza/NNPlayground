@@ -44,9 +44,16 @@
 - [x] Init layer function
 
 ## 01-Dec-23
-- [ ] VectorN copy constructor and operator=
-- [ ] MatrixMN copy constructor and operator=
-- [ ] Test VectorN in forward function if it still SIGABORTs on assignment 
+- [x] VectorN copy constructor and operator=
+- [x] MatrixMN copy constructor and operator=
+- [x] Test VectorN in forward function if it still SIGABORTs on assignment
+
+## 04-Dec-23
+- [ ] Calculate sigmoid
+- [ ] How is cost function calculated?
+- [x] How is cost function used in learning?
+- [x] What can be tweaked in a layer?
+- [ ] How is a layer tweaked?
 
 
 # Git Usage (This project)
@@ -67,7 +74,45 @@ git push -u origin main
 
 ## Weight Matrix
 - A weight matrix represents the weights connected from 2 layers
-- 
+
+## Learning phase
+- Learning means taking the output of the cost function and calculating the new weights and biases for each layer
+- The weights and biases are adjusted for each iteration with the goal of the cost function returning a smaller value
+
+### Cost function
+- The cost function takes the entire network and outputs 1 cost value
+- The input are all the training data for each iteration
+- The cost per input is calculated as:
+
+```
+    // If input is 2, then
+    cost =
+        (output_layer.activation[0] - 0)^2 +
+        (output_layer.activation[1] - 0)^2 +
+        (output_layer.activation[2] - 1)^2 +
+        (output_layer.activation[3] - 0)^2 +
+        (output_layer.activation[4] - 0)^2 +
+        (output_layer.activation[5] - 0)^2 +
+        (output_layer.activation[6] - 0)^2 +
+        (output_layer.activation[7] - 0)^2 +
+        (output_layer.activation[8] - 0)^2 +
+        (output_layer.activation[9] - 0)^2
+```
+- The average cost of the entire network is the average cost of all training input
+- The average cost is calculated per iteration. For each iteration if the average cost is low enough, then the training is completed
+
+```
+double calculateCost(output_layer, label)
+{
+    double cost = 0.0;
+    for (i = 0 to output_layer.size) {
+        double c = output_layer.activation[i] - (label & i)
+        cost += c * c;
+    }
+    return cost;
+}
+```
+
 
 # MNIST
 http://yann.lecun.com/exdb/mnist/

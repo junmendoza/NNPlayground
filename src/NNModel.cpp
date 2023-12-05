@@ -47,20 +47,28 @@ void NNModel::sigmoid(Math::VectorN& activation)
     }
 }
 
-void NNModel::forward(const std::vector<Math::VectorN*>& training_data)
+void NNModel::forward(const std::vector<double*>& training_data)
 {
     // For every MNIST training data, calculate the activation for all layers
     for (size_t i = 0; i < training_data.size(); ++i) {
 
         // Assign current training data activation list to the input layer
-        _layers[0]._activation._data = (*training_data[i])._data;
+        _layers[0]._activation._data = training_data[i];
+//#define DEBUG_INPUTLAYER_ACTIVATION
+#ifdef DEBUG_INPUTLAYER_ACTIVATION
+        for (int n = 0; n < 10; ++n) {
+            if (_layers[INPUT]._activation._data[n] > 0.0f) {
+                Utils::Trace::strace("Layer: %d, Activation: %f\n", INPUT, _layers[INPUT]._activation._data[n]);
+            }
+        }
+#endif
 
         // Calculate activation for all inner layers and output layer
         for (size_t j = 1; j < _num_layers; ++j)
         {
-//#define DEBUGME
-#ifdef DEBUGME
-            for (int n = 0; n < 200; ++n) {
+//#define DEBUG_INNERLAYER_ACTIVATION
+#ifdef DEBUG_INNERLAYER_ACTIVATION
+            for (int n = 0; n < 10; ++n) {
                 if (_layers[j]._activation._data[n] > 0.0f) {
                     Utils::Trace::strace("Layer: %d, Activation: %f\n", j, _layers[j]._activation._data[n]);
                 }
@@ -76,14 +84,15 @@ void NNModel::forward(const std::vector<Math::VectorN*>& training_data)
     }
 }
 
-size_t NNModel::train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label)
+size_t NNModel::train(const size_t& single_data_size, const std::vector<double*>& training_data, const std::vector<uint8_t> label)
 {
-    size_t input_layer_neurons = training_data[0]->_size;
+    size_t input_layer_neurons = single_data_size;
     setupLayers(input_layer_neurons);
 
     uint32_t iterations = 0;
     for (iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
         forward(training_data);
+
         TrainingParams params = getTrainingParams(_layers);
         if (params.done) {
             break;
@@ -93,7 +102,7 @@ size_t NNModel::train(const std::vector<Math::VectorN*>& training_data, const ui
     return iterations;
 }
 
-void NNModel::infer(const std::vector<Math::VectorN*>& inference_data, const uint8_t* label)
+void NNModel::infer(const size_t& single_data_size, const std::vector<double*>& inference_data, const std::vector<uint8_t> label)
 {
 }
 

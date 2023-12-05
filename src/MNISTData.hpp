@@ -41,8 +41,9 @@ public:
     ~MNISTData(void);
 public:
     bool loadData(void);
-    uint8_t* getLabel(void) const { return _raw_label_data; }
-    std::vector<Math::VectorN*> getActivation(void) const { return _activation_data; }
+    size_t getSingleDataSize(void) const { return PIXELS_PER_IMAGE; }
+    std::vector<uint8_t> getLabelData(void) const { return _label_data; }
+    std::vector<double*> getImageData(void) const { return _image_data; }
     
 private:
     bool loadRawImageData(void);
@@ -62,7 +63,8 @@ private:
     uint8_t* _raw_image_data;
     uint8_t* _raw_label_data;
 
-    std::vector<Math::VectorN*> _activation_data;
+    std::vector<uint8_t> _label_data;
+    std::vector<double*> _image_data;
 };
 
 #endif /* MNISTData_hpp */

@@ -26,7 +26,7 @@ enum LAYER_ID {
     COUNT
 };
 
-static const size_t MAX_ITERATIONS = 10;
+static const size_t MAX_ITERATIONS = 1;
 static const size_t LAYER1_NEURONS = 16;
 static const size_t OUTPUT_LAYER_NEURONS = 10;
 
@@ -38,9 +38,9 @@ public:
     void setupLayers(size_t input_layer_neurons);
 
     void sigmoid(Math::VectorN& activation);
-    void forward(const std::vector<Math::VectorN*>& training_data);
-    size_t train(const std::vector<Math::VectorN*>& training_data, const uint8_t* label);
-    void infer(const std::vector<Math::VectorN*>& inference_data, const uint8_t* label);
+    void forward(const std::vector<double*>& training_data);
+    size_t train(const size_t& single_data_size, const std::vector<double*>& training_data, const std::vector<uint8_t> label);
+    void infer(const size_t& single_data_size, const std::vector<double*>& inference_data, const std::vector<uint8_t> label);
 
     double calculateCost(const NNLayer* layers);
     TrainingParams getTrainingParams(const NNLayer* layers);

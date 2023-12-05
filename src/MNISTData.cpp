@@ -56,14 +56,10 @@ bool MNISTData::validateMNISTFile() const
 void MNISTData::normalizeData(void)
 {
     assert(NULL != _raw_image_data);
-    uint32_t raw_data_idx = 0;
     for (uint32_t i = 0; i < _image_header->items; ++i) {
-        Math::VectorN* normalized = new Math::VectorN(PIXELS_PER_IMAGE);
         for (uint32_t j = 0; j < PIXELS_PER_IMAGE; ++j) {
-            double activation = ((double)_raw_image_data[++raw_data_idx]) / 255.0f;
-            normalized->_data[j] = activation;
+            _image_data[i][j] = _image_data[i][j] / 255.0f;
         }
-        _activation_data.push_back(normalized);
     }
 }
 
@@ -143,6 +139,15 @@ bool MNISTData::loadImageData(void)
     if (!loadRawImageData()) {
         return false;
     }
+    assert(NULL != _raw_image_data);
+    uint32_t raw_data_idx = 0;
+    for (uint32_t i = 0; i < _image_header->items; ++i) {
+        double* fp_data = new double[PIXELS_PER_IMAGE];
+        for (uint32_t j = 0; j < PIXELS_PER_IMAGE; ++j) {
+            fp_data[j] = (double)_raw_image_data[++raw_data_idx];
+        }
+        _image_data.push_back(fp_data);
+    }
     return true;
 }
 
@@ -151,6 +156,7 @@ bool MNISTData::loadLabelData(void)
     if (!loadRawLabelData()) {
         return false;
     }
+    _label_data.insert(_label_data.begin(), _raw_label_data, _raw_label_data + _label_header->items);
     return true;
 }
 
