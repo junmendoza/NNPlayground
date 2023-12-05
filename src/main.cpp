@@ -21,10 +21,10 @@ bool TrainModel(NNModel** model)
     if (!mnist_train_data.loadData()) {
         return false;
     }
-    size_t single_data_size = mnist_train_data.getSingleDataSize();
+    size_t data_size = mnist_train_data.getSingleDataSize();
     std::vector<double*> training_data = mnist_train_data.getImageData();
     std::vector<uint8_t> label_data = mnist_train_data.getLabelData();
-    size_t iterations = (*model)->train(single_data_size, training_data, label_data);
+    size_t iterations = (*model)->train(data_size, training_data, label_data);
     Utils::Trace::strace("Image training took %d iterations.\n", iterations);
     return true;
 }
@@ -40,10 +40,10 @@ bool TestModel(NNModel** model)
     }
     
     // Test NN using inference data
-    size_t single_data_size = mnist_infer_data.getSingleDataSize();
+    size_t data_size = mnist_infer_data.getSingleDataSize();
     std::vector<double*> inference_data = mnist_infer_data.getImageData();
     std::vector<uint8_t> label_data = mnist_infer_data.getLabelData();
-    (*model)->infer(single_data_size, inference_data, label_data);
+    (*model)->infer(data_size, inference_data, label_data);
     return true;
 }
 

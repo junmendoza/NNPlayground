@@ -139,6 +139,10 @@ bool MNISTData::loadImageData(void)
     if (!loadRawImageData()) {
         return false;
     }
+
+    // Store each image data as an entry into a vector of images
+    // Each image data is stored as a double
+    // The nn model processes a double datatype 
     assert(NULL != _raw_image_data);
     uint32_t raw_data_idx = 0;
     for (uint32_t i = 0; i < _image_header->items; ++i) {

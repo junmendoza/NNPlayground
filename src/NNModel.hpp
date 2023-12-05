@@ -38,12 +38,12 @@ public:
     void setupLayers(size_t input_layer_neurons);
 
     void sigmoid(Math::VectorN& activation);
-    void forward(const std::vector<double*>& training_data);
-    size_t train(const size_t& single_data_size, const std::vector<double*>& training_data, const std::vector<uint8_t> label);
-    void infer(const size_t& single_data_size, const std::vector<double*>& inference_data, const std::vector<uint8_t> label);
+    double forward(const std::vector<double*>& training_data, const std::vector<uint8_t>& label);
+    size_t train(const size_t& data_size, const std::vector<double*>& training_data, const std::vector<uint8_t>& label);
+    void infer(const size_t& data_size, const std::vector<double*>& inference_data, const std::vector<uint8_t>& label);
 
-    double calculateCost(const NNLayer* layers);
-    TrainingParams getTrainingParams(const NNLayer* layers);
+    double calculateCost(const NNLayer& output_layer, uint8_t label);
+    TrainingParams getTrainingParams(const double& ave_cost, const NNLayer* layers);
     void backpropagate(const TrainingParams& params);
 
 private:

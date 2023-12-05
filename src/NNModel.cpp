@@ -47,11 +47,12 @@ void NNModel::sigmoid(Math::VectorN& activation)
     }
 }
 
-void NNModel::forward(const std::vector<double*>& training_data)
+double NNModel::forward(const std::vector<double*>& training_data, const std::vector<uint8_t>& label)
 {
     // For every MNIST training data, calculate the activation for all layers
-    for (size_t i = 0; i < training_data.size(); ++i) {
-
+    double ave_cost = 0.0f;
+    for (size_t i = 0; i < training_data.size(); ++i)
+    {
         // Assign current training data activation list to the input layer
         _layers[0]._activation._data = training_data[i];
 //#define DEBUG_INPUTLAYER_ACTIVATION
@@ -81,19 +82,22 @@ void NNModel::forward(const std::vector<double*>& training_data)
             _layers[j]._activation.add(_layers[j]._bias);
             sigmoid(_layers[j]._activation);
         }
+        ave_cost += calculateCost(_layers[OUTPUT], label[i]);
     }
+    return ave_cost / training_data.size();
 }
 
-size_t NNModel::train(const size_t& single_data_size, const std::vector<double*>& training_data, const std::vector<uint8_t> label)
+size_t NNModel::train(const size_t& data_size,
+                      const std::vector<double*>& training_data,
+                      const std::vector<uint8_t>& label)
 {
-    size_t input_layer_neurons = single_data_size;
+    size_t input_layer_neurons = data_size;
     setupLayers(input_layer_neurons);
 
     uint32_t iterations = 0;
     for (iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
-        forward(training_data);
-
-        TrainingParams params = getTrainingParams(_layers);
+        double ave_cost = forward(training_data, label);
+        TrainingParams params = getTrainingParams(ave_cost, _layers);
         if (params.done) {
             break;
         }
@@ -102,19 +106,26 @@ size_t NNModel::train(const size_t& single_data_size, const std::vector<double*>
     return iterations;
 }
 
-void NNModel::infer(const size_t& single_data_size, const std::vector<double*>& inference_data, const std::vector<uint8_t> label)
+void NNModel::infer(const size_t& data_size,
+                    const std::vector<double*>& inference_data,
+                    const std::vector<uint8_t>& label)
 {
 }
 
-double NNModel::calculateCost(const NNLayer* layers)
+double NNModel::calculateCost(const NNLayer& output_layer, uint8_t label)
 {
-    return 0.0f;
+    double cost = 0.0;
+    for (size_t n = 0; n < output_layer._activation._size; ++n) {
+        double c =  output_layer._activation._data[n] - (double)(label == n);
+        double c2 = c * c;
+        cost += c2;
+    }
+    return cost;
 }
 
-TrainingParams NNModel::getTrainingParams(const NNLayer* layers)
+TrainingParams NNModel::getTrainingParams(const double& ave_cost, const NNLayer* layers)
 {
-    double cost = calculateCost(layers);
-    UNUSED(cost);
+    UNUSED(ave_cost);
 
     TrainingParams params;
     return params;
