@@ -65,12 +65,12 @@ void VectorN::add(const VectorN& rhs)
 
 void VectorN::mul(const MatrixMN& mat)
 {
-    assert(_size == mat._cols);
-    size_t c, r;
-    for (c = 0; c < mat._cols; ++c) {
+    assert(_size == mat._rows);
+    size_t r, c;
+    for (r = 0; r < mat._rows; ++r) {
         double accumulate = 0.0f;
-        for (r = 0; r < mat._rows; ++r) {
-            accumulate = accumulate + (_data[r] * mat._data[r][c]);
+        for (c = 0; c < mat._cols; ++c) {
+            accumulate = accumulate + (_data[c] * mat._data[r][c]);
         }
         _data[r] = accumulate;
     }

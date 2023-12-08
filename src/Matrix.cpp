@@ -95,11 +95,11 @@ VectorN MatrixMN::mul(const VectorN& vec)
 {
     assert(vec._size == _rows);
     VectorN new_vec(vec._size);
-    size_t c, r;
-    for (c = 0; c < _cols; ++c) {
+    size_t r, c;
+    for (r = 0; r < _rows; ++r) {
         double accumulate = 0.0f;
-        for (r = 0; r < _rows; ++r) {
-            accumulate = accumulate + (vec._data[r] * _data[r][c]);
+        for (c = 0; c < _cols; ++c) {
+            accumulate = accumulate + (vec._data[c] * _data[r][c]);
         }
         new_vec._data[r] = accumulate;
     }

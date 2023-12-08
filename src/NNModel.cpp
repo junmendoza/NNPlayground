@@ -20,16 +20,16 @@ NNModel::~NNModel(void)
 
 void NNModel::setupLayers(size_t input_layer_neurons)
 {
-    // r = layer0.neurons
-    // c = layer1.neurons
-    _layers[INPUT ]._weights.setup(input_layer_neurons, LAYER1_NEURONS);
+    // r = layer1.neurons
+    // c = layer0.neurons
+    _layers[INPUT ]._weights.setup(LAYER1_NEURONS, input_layer_neurons);
     _layers[INPUT ]._weights.setDefaultValue(0.1);
     _layers[INPUT ]._bias.initialize(input_layer_neurons, 0.2);
     _layers[INPUT ]._activation.initialize(input_layer_neurons, 0.0);
 
-    // r = layer1.neurons
-    // c = layer2.neurons
-    _layers[LAYER1]._weights.setup(LAYER1_NEURONS, OUTPUT_LAYER_NEURONS);
+    // r = layer2.neurons
+    // c = layer1.neurons
+    _layers[LAYER1]._weights.setup(OUTPUT_LAYER_NEURONS, LAYER1_NEURONS);
     _layers[LAYER1]._weights.setDefaultValue(0.3);
     _layers[LAYER1]._bias.initialize(LAYER1_NEURONS, 0.4);
     _layers[LAYER1]._activation.initialize(LAYER1_NEURONS, 0.0);
@@ -97,19 +97,9 @@ size_t NNModel::train(const size_t& data_size,
     uint32_t iterations = 0;
     for (iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
         double ave_cost = forward(training_data, label);
-        TrainingParams params = getTrainingParams(ave_cost, _layers);
-        if (params.done) {
-            break;
-        }
-        backpropagate(params);
+        backpropagate(ave_cost);
     }
     return iterations;
-}
-
-void NNModel::infer(const size_t& data_size,
-                    const std::vector<double*>& inference_data,
-                    const std::vector<uint8_t>& label)
-{
 }
 
 double NNModel::calculateCost(const NNLayer& output_layer, uint8_t label)
@@ -123,15 +113,16 @@ double NNModel::calculateCost(const NNLayer& output_layer, uint8_t label)
     return cost;
 }
 
-TrainingParams NNModel::getTrainingParams(const double& ave_cost, const NNLayer* layers)
+void NNModel::backpropagate(const double& ave_cost)
 {
+    // Determine how to lower the average cost in the layer
     UNUSED(ave_cost);
 
-    TrainingParams params;
-    return params;
+    // Adjust weights and biases based on training parameters
 }
 
-void NNModel::backpropagate(const TrainingParams& params)
+void NNModel::infer(const size_t& data_size,
+                    const std::vector<double*>& inference_data,
+                    const std::vector<uint8_t>& label)
 {
-    // Adjust weights and biases based on training parameters
 }

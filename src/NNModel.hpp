@@ -43,8 +43,7 @@ public:
     void infer(const size_t& data_size, const std::vector<double*>& inference_data, const std::vector<uint8_t>& label);
 
     double calculateCost(const NNLayer& output_layer, uint8_t label);
-    TrainingParams getTrainingParams(const double& ave_cost, const NNLayer* layers);
-    void backpropagate(const TrainingParams& params);
+    void backpropagate(const double& ave_cost);
 
 private:
     size_t   _num_layers;

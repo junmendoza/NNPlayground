@@ -21,9 +21,9 @@ struct NNLayer
     Math::VectorN  _activation;     // Activation vector
     Math::VectorN  _bias;           // Bias vector
 
-    // Weight matrix [layer.neurons X nextlayer.neurons]
-    // The rows are the number of neurons in the current layer
-    // The cols are the number of neurons in the next resulting layer
+    // Weight matrix [rows X cols]
+    // The rows are the number of neurons in the next resulting layer
+    // The cols are the number of neurons in the current layer
     // The weight matrix is multipled with the activation list in the current layer
     // The output is the activation list in the next layer
     Math::MatrixMN _weights;
