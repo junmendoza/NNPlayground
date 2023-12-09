@@ -50,10 +50,15 @@
 
 ## 04-Dec-23
 - [ ] Calculate sigmoid
-- [ ] How is cost function calculated?
+- [x] How is cost function calculated?
 - [x] How is cost function used in learning?
 - [x] What can be tweaked in a layer?
 - [ ] How is a layer tweaked?
+
+## 09-Dec-23
+- [ ] Randomize: Impl randomizer function
+- [ ] Randomize: Bias
+- [ ] Randomize: Weights
 
 
 # Git Usage (This project)

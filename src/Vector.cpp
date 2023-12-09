@@ -39,20 +39,36 @@ VectorN::~VectorN(void)
     SAFE_DELETE_ARRAY(_data);
 }
 
-void VectorN::setDefaultValue(double val)
-{
-    for (size_t n = 0; n < _size; ++n) {
-        _data[n] = val;
-    }
-}
-
-void VectorN::initialize(size_t size, double val)
+void VectorN::initialize(size_t size)
 {
     assert(0 == _size);
     assert(NULL == _data);
     _size = size;
     _data = new double[_size];
-    setDefaultValue(val);
+}
+
+void VectorN::initDefaultValue(size_t size, double val)
+{
+    initialize(size);
+    for (size_t n = 0; n < _size; ++n) {
+        _data[n] = val;
+    }
+}
+
+void VectorN::initRandomUintValue(size_t size, size_t min, size_t max)
+{
+    initialize(size);
+    for (size_t n = 0; n < _size; ++n) {
+        _data[n] = Utils::randomizeUint(min, max);
+    }
+}
+
+void VectorN::initRandomDoubleValue(size_t size)
+{
+    initialize(size);
+    for (size_t n = 0; n < _size; ++n) {
+        _data[n] = Utils::randomizeDouble01();
+    }
 }
 
 void VectorN::add(const VectorN& rhs)
@@ -60,6 +76,14 @@ void VectorN::add(const VectorN& rhs)
     assert(_size == rhs._size);
     for (size_t n = 0; n < _size; ++n) {
         _data[n] = _data[n] + rhs._data[n];
+    }
+}
+
+void VectorN::sub(const VectorN& rhs)
+{
+    assert(_size == rhs._size);
+    for (size_t n = 0; n < _size; ++n) {
+        _data[n] = _data[n] - rhs._data[n];
     }
 }
 
@@ -75,6 +99,5 @@ void VectorN::mul(const MatrixMN& mat)
         _data[r] = accumulate;
     }
 }
-
 
 }

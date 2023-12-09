@@ -24,9 +24,12 @@ public:
     ~VectorN(void);
 
 public:
-    void setDefaultValue(double val);
-    void initialize(size_t size, double val);
+    void initialize(size_t size);
+    void initDefaultValue(size_t size, double val);
+    void initRandomUintValue(size_t size, size_t min, size_t max);
+    void initRandomDoubleValue(size_t size);
     void add(const VectorN& rhs);
+    void sub(const VectorN& rhs);
     void mul(const MatrixMN& mat);
 
 public:

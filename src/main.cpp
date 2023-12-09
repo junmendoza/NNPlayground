@@ -47,10 +47,13 @@ bool TestModel(NNModel** model)
     return true;
 }
 
-#include <iostream>
-
 int main(int argc, const char * argv[])
-{        
+{
+//#define TEST_RANDOM
+#ifdef TEST_RANDOM
+    Utils::testRandomizeUint();
+    Utils::testRandomizeDouble();
+#else
     Utils::Trace::strace("NN Image classification \n");
     
     NNModel* model = new NNModel();
@@ -62,6 +65,6 @@ int main(int argc, const char * argv[])
         return -1;
     }
     SAFE_DELETE(model);
-    
+#endif
     return 0;
 }

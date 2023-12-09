@@ -9,6 +9,9 @@
 #define Utils_hpp
 
 #include <string>
+#include <stdlib.h>
+#include <time.h>
+
 
 #define UNUSED(x) (void)x;
 #define SAFE_DELETE(ptr) if (NULL != ptr) { delete ptr; ptr = NULL; }
@@ -22,6 +25,11 @@
 #define TWIST32(n) ((n & 0xff000000) >> 24) | ((n & 0x00ff0000) >> 8)| ((n & 0x0000ff00) << 8) | ((n & 0x000000ff) << 24)
 
 namespace Utils {
+
+size_t randomizeUint(size_t min, size_t max);
+double randomizeDouble01(void);
+void testRandomizeUint(void);
+void testRandomizeDouble(void);
 
 class Trace
 {

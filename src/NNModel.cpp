@@ -24,26 +24,25 @@ void NNModel::setupLayers(size_t input_layer_neurons)
     // c = layer0.neurons
     _layers[INPUT ]._weights.setup(LAYER1_NEURONS, input_layer_neurons);
     _layers[INPUT ]._weights.setDefaultValue(0.1);
-    _layers[INPUT ]._bias.initialize(input_layer_neurons, 0.2);
-    _layers[INPUT ]._activation.initialize(input_layer_neurons, 0.0);
+    _layers[INPUT ]._bias.initRandomUintValue(input_layer_neurons, 1, 5);
+    _layers[INPUT ]._activation.initRandomDoubleValue(input_layer_neurons);
 
     // r = layer2.neurons
     // c = layer1.neurons
     _layers[LAYER1]._weights.setup(OUTPUT_LAYER_NEURONS, LAYER1_NEURONS);
     _layers[LAYER1]._weights.setDefaultValue(0.3);
-    _layers[LAYER1]._bias.initialize(LAYER1_NEURONS, 0.4);
-    _layers[LAYER1]._activation.initialize(LAYER1_NEURONS, 0.0);
+    _layers[LAYER1]._bias.initRandomUintValue(LAYER1_NEURONS, 1, 5);
+    _layers[LAYER1]._activation.initRandomDoubleValue(LAYER1_NEURONS);
 
     // Output layer has no weight matrix
-    _layers[OUTPUT]._bias.initialize(OUTPUT_LAYER_NEURONS, 0.0);
-    _layers[OUTPUT]._activation.initialize(OUTPUT_LAYER_NEURONS, 0.0);
+    _layers[OUTPUT]._bias.initRandomUintValue(OUTPUT_LAYER_NEURONS, 1, 5);
+    _layers[OUTPUT]._activation.initRandomDoubleValue(OUTPUT_LAYER_NEURONS);
 }
 
 void NNModel::sigmoid(Math::VectorN& activation)
 {
     for (size_t n = 0; n < activation._size; ++n) {
-        // Todo apply sigmoid
-        activation._data[n] = activation._data[n];
+        activation._data[n] = 1 / (1 + exp(-activation._data[n]));
     }
 }
 
@@ -79,7 +78,7 @@ double NNModel::forward(const std::vector<double*>& training_data, const std::ve
             // * Applying matrix and vector arithmetic on the layer activation vector
             // * Do not create multiple temp copies of the activation vector
             _layers[j]._activation.mul(_layers[j-1]._weights);
-            _layers[j]._activation.add(_layers[j]._bias);
+            _layers[j]._activation.sub(_layers[j]._bias);
             sigmoid(_layers[j]._activation);
         }
         ave_cost += calculateCost(_layers[OUTPUT], label[i]);
