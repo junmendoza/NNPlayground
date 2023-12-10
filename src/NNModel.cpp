@@ -46,6 +46,25 @@ void NNModel::sigmoid(Math::VectorN& activation)
     }
 }
 
+size_t NNModel::train(const size_t& data_size,
+                      const std::vector<double*>& training_data,
+                      const std::vector<uint8_t>& label)
+{
+    size_t input_layer_neurons = data_size;
+    setupLayers(input_layer_neurons);
+
+    uint32_t iterations = 0;
+    for (iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
+        double ave_cost = forward(training_data, label);
+        Utils::Trace::strace("Training iteration: %d, cost: %f.\n", iterations, ave_cost);
+        bool done = backpropagate(ave_cost);
+        if (done) {
+            break;
+        }
+    }
+    return iterations;
+}
+
 double NNModel::forward(const std::vector<double*>& training_data, const std::vector<uint8_t>& label)
 {
     // For every MNIST training data, calculate the activation for all layers
@@ -86,19 +105,19 @@ double NNModel::forward(const std::vector<double*>& training_data, const std::ve
     return ave_cost / training_data.size();
 }
 
-size_t NNModel::train(const size_t& data_size,
-                      const std::vector<double*>& training_data,
-                      const std::vector<uint8_t>& label)
+bool NNModel::backpropagate(const double& ave_cost)
 {
-    size_t input_layer_neurons = data_size;
-    setupLayers(input_layer_neurons);
-
-    uint32_t iterations = 0;
-    for (iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
-        double ave_cost = forward(training_data, label);
-        backpropagate(ave_cost);
+    const double COST_THRESHOLD = 0.0f;
+    if (ave_cost <= COST_THRESHOLD) {
+        return true;
     }
-    return iterations;
+
+    // Determine how to lower the average cost in the layer
+
+    // Adjust weights and biases based on training parameters
+
+    // This backprop cycle is not yet done
+    return false;
 }
 
 double NNModel::calculateCost(const NNLayer& output_layer, uint8_t label)
@@ -110,14 +129,6 @@ double NNModel::calculateCost(const NNLayer& output_layer, uint8_t label)
         cost += c2;
     }
     return cost;
-}
-
-void NNModel::backpropagate(const double& ave_cost)
-{
-    // Determine how to lower the average cost in the layer
-    UNUSED(ave_cost);
-
-    // Adjust weights and biases based on training parameters
 }
 
 void NNModel::infer(const size_t& data_size,
