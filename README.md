@@ -49,16 +49,24 @@
 - [x] Test VectorN in forward function if it still SIGABORTs on assignment
 
 ## 04-Dec-23
-- [ ] Calculate sigmoid
+- [x] Calculate sigmoid
 - [x] How is cost function calculated?
 - [x] How is cost function used in learning?
 - [x] What can be tweaked in a layer?
-- [ ] How is a layer tweaked?
+- [x] How is a layer tweaked?
 
 ## 09-Dec-23
-- [ ] Randomize: Impl randomizer function
-- [ ] Randomize: Bias
-- [ ] Randomize: Weights
+- [x] Randomize: Impl randomizer function
+- [x] Randomize: Bias
+- [x] Randomize: Weights
+
+
+## 10-Dec-23
+- [x] What is the structure of the negative gradient?
+- [x] How are each element of the negative gradient calculated?
+
+## 13-Dec-23
+- [x] Design the calculateGradient recursive function
 
 
 # Git Usage (This project)
@@ -78,11 +86,55 @@ git push -u origin main
 - Pixel data must be normalized to a value between 0 and 1 and set as the activation of each neuron in the input layer
 
 ## Weight Matrix
-- A weight matrix represents the weights connected from 2 layers
+- A weight matrix represents the weights connected from 2 layers.
+- The dimensions are [rows X cols]
+- The rows are the number of neurons in the next resulting layer
+- The cols are the number of neurons in the current layer
+- The weight matrix is multipled with the activation list in the current layer
+- The output is the activations of each neuron in the next layer
+
 
 ## Learning phase
 - Learning means taking the output of the cost function and calculating the new weights and biases for each layer
 - The weights and biases are adjusted for each iteration with the goal of the cost function returning a smaller value
+- Determining the weights and biases that minimizes the average cost is also known as calculating the gradient descent of a function, where the function is the entire NN
+- Each layer will have a function whose parameter is the negative gradient (ngrad). This parameter is used to adjust the layer weights and bias.
+```
+void backpropagate(label, idx, delta = 0.0f)
+{
+    if (INPUT == idx) return;
+
+    // For each activation in the current layer
+    for (n = 0 to layers[idx].act) {
+        // Calculate the nudge delta of this neuron
+        nudge_up = OUTPUT == idx ? n == label : delta > 0.0f;
+        delta = (1 & (int)nudge_up) - layers[idx].act[n];
+
+        // Adjust weights and bias and backpropagate only if the neuron needs adjustment
+        if (0.0f != delta) {
+            adjustBias(delta, idx, n);
+            adjustWeights(delta, idx);
+            backpropagate(label, idx-1, delta);
+        }
+    }
+}
+
+void adjustBias(delta, idx, n)
+{
+    // Calculate the new bias given the delta
+    bias = calculateNewBias(delta, idx, n);
+    applyBias(idx, n, bias);
+}
+
+void adjustWeights(delta, idx)
+{
+    // Calculate the negative gradient of the weights of this layer given:
+    // * The delta
+    // * The activations of the previous layer
+    gradient_weights = calculateGradient(delta, layers[idx-1].act);
+    applyGradient(layers[idx], gradient_weights);
+}
+```
 
 ### Cost function
 - The cost function takes the entire network and outputs 1 cost value
@@ -154,10 +206,9 @@ LabelHeader
     
 class Layer
 {
-    uint32_t  label;         // image identifier
     double*    activation;    // activation vector
     double**   weight_matrix; // weight matrix [layer.neurons X prev_layer.neurons]
-    uint8_t*  bias;          // bias vector 
+    uint8_t*  bias;           // bias vector
 }
 
 // Image file
@@ -190,23 +241,19 @@ void Model::forward(const vector<const double*>& train_data, vector<Layer>& laye
     }
 }
 
-void Model::backpropagate(const TrainingParams& params, vector<Layer>& layers)
-{
-    // Adjust weights and biases based on training parameters
-}
-
-uint32_t Model::train(const vector<const double*>& training_data, const uint32_t* label)
+uint32_t Model::train(const vector<const double*>& training_data, const uint32_t* labels)
 {
     initLayers();
-    for (int n = 0; n < MAX_ITERATIONS; ++n) {
-        forward(training_data, layers);
-        TrainingParams params = getTrainingParams(layers);
-        if (params.done) {
-            break;
+    for (int i = 0 to MAX_ITERATIONS) {
+        ave_cost = forward(training_data, labels);
+        if (ave_cost <= threshold) break;
+
+        // Backpropagate for each training data
+        for (int j = 0 to train_data.cnt) {
+            backpropagate(labels[j], OUTPUT);
         }
-        backpropagate(params, layers);
     }
-    return n;
+    return i;
 } 
 ```
 

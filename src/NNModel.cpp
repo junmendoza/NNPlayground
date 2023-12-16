@@ -50,6 +50,8 @@ size_t NNModel::train(const size_t& data_size,
                       const std::vector<double*>& training_data,
                       const std::vector<uint8_t>& label)
 {
+    assert(training_data.size() == label.size());
+
     size_t input_layer_neurons = data_size;
     setupLayers(input_layer_neurons);
 
@@ -57,9 +59,12 @@ size_t NNModel::train(const size_t& data_size,
     for (iterations = 0; iterations < MAX_ITERATIONS; ++iterations) {
         double ave_cost = forward(training_data, label);
         Utils::Trace::strace("Training iteration: %d, cost: %f.\n", iterations, ave_cost);
-        bool done = backpropagate(ave_cost);
-        if (done) {
-            break;
+
+        if (ave_cost <= COST_THRESHOLD) break;
+
+        // Backpropagate for each training data
+        for (size_t i = 0; i < training_data.size(); ++i) {
+            backpropagate(label[i], OUTPUT);
         }
     }
     return iterations;
@@ -105,19 +110,39 @@ double NNModel::forward(const std::vector<double*>& training_data, const std::ve
     return ave_cost / training_data.size();
 }
 
-bool NNModel::backpropagate(const double& ave_cost)
+void NNModel::backpropagate(const uint8_t label, const LAYER_ID idx, double delta)
 {
-    const double COST_THRESHOLD = 0.0f;
-    if (ave_cost <= COST_THRESHOLD) {
-        return true;
+    if (INPUT == idx) return;
+
+    // For each activation in the current layer
+    for (size_t n = 0; n < _layers[idx]._activation._size; ++n) {
+        // Calculate the nudge delta of this neuron
+        bool nudge_up = OUTPUT == idx ? n == label : delta > 0.0f;
+        delta = (1 & (int)nudge_up) - _layers[idx]._activation._data[n];
+
+        // Adjust weights and bias and backpropagate only if the neuron needs adjustment
+        if (0.0f != delta) {
+            adjustBias(delta, idx, n);
+            adjustWeights(delta, idx);
+            backpropagate(label, (LAYER_ID)(idx - 1), delta);
+        }
     }
+}
 
-    // Determine how to lower the average cost in the layer
+void NNModel::adjustBias(const double delta, const LAYER_ID idx, size_t act_idx)
+{
+    // Calculate the new bias given the delta
+    //bias = calculateNewBias(delta, idx, n);
+    //applyBias(idx, n, bias);
+}
 
-    // Adjust weights and biases based on training parameters
-
-    // This backprop cycle is not yet done
-    return false;
+void NNModel::adjustWeights(const double delta, const LAYER_ID idx)
+{
+    // Calculate the negative gradient of the weights of this layer given:
+    // * The delta
+    // * The activations of the previous layer
+    //gradient_weights = calculateGradient(delta, layers[idx-1].act);
+    //applyGradient(layers[idx], gradient_weights);
 }
 
 double NNModel::calculateCost(const NNLayer& output_layer, uint8_t label)
