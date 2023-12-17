@@ -100,39 +100,39 @@ git push -u origin main
 - Determining the weights and biases that minimizes the average cost is also known as calculating the gradient descent of a function, where the function is the entire NN
 - Each layer will have a function whose parameter is the negative gradient (ngrad). This parameter is used to adjust the layer weights and bias.
 ```
-void backpropagate(label, idx, delta = 0.0f)
+void backpropagate(idx, label, delta = 0.0f)
 {
     if (INPUT == idx) return;
 
     // For each activation in the current layer
-    for (n = 0 to layers[idx].act) {
+    for (act_idx = 0 to layers[idx].act) {
         // Calculate the nudge delta of this neuron
-        nudge_up = OUTPUT == idx ? n == label : delta > 0.0f;
-        delta = (1 & (int)nudge_up) - layers[idx].act[n];
+        nudge_up = OUTPUT == idx ? act_idx == label : delta > 0.0f;
+        delta = (1 & (int)nudge_up) - layers[idx].act[act_idx];
 
         // Adjust weights and bias and backpropagate only if the neuron needs adjustment
         if (0.0f != delta) {
-            adjustBias(delta, idx, n);
-            adjustWeights(delta, idx);
-            backpropagate(label, idx-1, delta);
+            adjustBias(layer[idx], act_idx, delta);
+            adjustWeights(layer[idx], act_idx, delta);
+            backpropagate(layer[idx-1], label, delta);
         }
     }
 }
 
-void adjustBias(delta, idx, n)
+void adjustBias(layer, act_idx, delta)
 {
     // Calculate the new bias given the delta
-    bias = calculateNewBias(delta, idx, n);
-    applyBias(idx, n, bias);
+    bias = calculateNewBias(layer, act_idx, delta);
+    applyBias(layer, act_idx, delta);
 }
 
-void adjustWeights(delta, idx)
+void adjustWeights(layer, act_idx, delta)
 {
     // Calculate the negative gradient of the weights of this layer given:
     // * The delta
     // * The activations of the previous layer
-    gradient_weights = calculateGradient(delta, layers[idx-1].act);
-    applyGradient(layers[idx], gradient_weights);
+    gradient = calculateGradient(layer, act_idx, delta);
+    applyGradient(layer, act_idx, gradient);
 }
 ```
 
@@ -250,7 +250,7 @@ uint32_t Model::train(const vector<const double*>& training_data, const uint32_t
 
         // Backpropagate for each training data
         for (int j = 0 to train_data.cnt) {
-            backpropagate(labels[j], OUTPUT);
+            backpropagate(OUTPUT, labels[j]);
         }
     }
     return i;

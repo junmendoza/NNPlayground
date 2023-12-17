@@ -34,12 +34,20 @@ public:
 public:
     void setupLayers(size_t input_layer_neurons);
     void sigmoid(Math::VectorN& activation);
+
     size_t train(const size_t& data_size, const std::vector<double*>& training_data, const std::vector<uint8_t>& label);
     double forward(const std::vector<double*>& training_data, const std::vector<uint8_t>& label);
-    void backpropagate(const uint8_t label, const LAYER_ID idx, double delta = 0.0f);
-    void adjustBias(const double delta, const LAYER_ID idx, size_t act_idx);
-    void adjustWeights(const double delta, const LAYER_ID idx);
     double calculateCost(const NNLayer& output_layer, uint8_t label);
+    void backpropagate(const LAYER_ID idx, const uint8_t label, double delta = 0.0f);
+
+    void adjustBias(NNLayer& layer, size_t act_idx, const double delta);
+    double calculateBias(NNLayer& layer, size_t act_idx, const double delta);
+    void applyBias(NNLayer& layer, size_t act_idx, const double bias);
+
+    void adjustWeights(NNLayer& layer, size_t act_idx, const double delta);
+    Math::VectorN calculateGradient(NNLayer& layer, size_t act_idx, const double delta);
+    void applyGradient(NNLayer& layer, size_t act_idx, const Math::VectorN& gradient);
+    
     void infer(const size_t& data_size, const std::vector<double*>& inference_data, const std::vector<uint8_t>& label);
 
 private:
